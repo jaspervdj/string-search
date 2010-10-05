@@ -45,7 +45,7 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
 
 int main(int argc, char **argv) {
     int i;
-    const char *pattern;
+    char *pattern;
     int pattern_size;
 
     /* Check that we have enough arguments. If not, bail out. */
@@ -65,6 +65,8 @@ int main(int argc, char **argv) {
     for(i = 2; i < argc; i++) {
         search_file(pattern, pattern_size, argv[i]);
     }
+
+    free(pattern);
 
     return 0;
 }
