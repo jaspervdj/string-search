@@ -4,6 +4,9 @@
 
 #include "common.h"
 
+void initialize_search(const char *pattern, int pattern_size) {
+}
+
 /**
  * Search a given pattern in a given buffer.
  */
@@ -19,4 +22,7 @@ void search_buffer(const char *pattern, int pattern_size, const char *file_name,
             printf("%s:%lld\n", file_name, buffer_offset + i);
         }
     }
+}
+
+void end_search() {
 }

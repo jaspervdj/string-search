@@ -13,7 +13,7 @@ inline int fill_next_buffer(char *buffer, int buffer_size, int retain,
 }
 
 inline char *create_buffer(int buffer_minimum_size, int *buffer_size) {
-    int size = 4096;
+    int size = 16 * 4096;
     while(size < buffer_minimum_size) size <<= 2;
     *buffer_size = size;
 #   ifdef DEBUG
