@@ -33,11 +33,15 @@ inline char *read_entire_file(const char *file_name, int *buffer_size) {
     }
 #   endif
 
+    /* Determine the size of the file */
     fseek(file, 0, SEEK_END);
     *buffer_size = ftell(file);
-    buffer = malloc(*buffer_size);
     fseek(file, 0, SEEK_SET);
+
+    /* Put the file in the buffer */
+    buffer = malloc(*buffer_size);
     fread(buffer, 1, *buffer_size, file);
+
     fclose(file);
     return buffer;
 }

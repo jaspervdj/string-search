@@ -3,5 +3,5 @@ Makefile
 *.cmake
 CMakeCache.txt
 
-search1
+search0
 data
