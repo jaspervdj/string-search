@@ -21,3 +21,23 @@ inline char *create_buffer(int buffer_minimum_size, int *buffer_size) {
 #   endif
     return malloc(size);
 }
+
+inline char *read_entire_file(const char *file_name, int *buffer_size) {
+    FILE *file = fopen(file_name, "r");
+    char *buffer;
+
+#   ifdef DEBUG
+    if(!file) {
+        printf("Could not open %s\n", file_name);
+        return 0;
+    }
+#   endif
+
+    fseek(file, 0, SEEK_END);
+    *buffer_size = ftell(file);
+    buffer = malloc(*buffer_size);
+    fseek(file, 0, SEEK_SET);
+    fread(buffer, 1, *buffer_size, file);
+    fclose(file);
+    return buffer;
+}

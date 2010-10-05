@@ -34,10 +34,12 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
 
     buffer = create_buffer(pattern_size, &buffer_size);
 
+#   ifdef DEBUG
     if(!file) {
         printf("Could not open file.\n");
         return;
     }
+#   endif
 
     result = fill_next_buffer(buffer, buffer_size, 0, file);
     while(result == buffer_size) {
@@ -67,12 +69,15 @@ int main(int argc, char **argv) {
     }
 
     /* Inspect the pattern. */
-    pattern = argv[1];
-    pattern_size = strlen(pattern);
+    pattern = read_entire_file(argv[1], &pattern_size);
+
+#   ifdef DEBUG
+    printf("Searching for: %s\n", pattern);
+#   endif
 
     /* Now, loop over the files. */
     for(i = 2; i < argc; i++) {
-        search_file(argv[1], pattern_size, argv[i]);
+        search_file(pattern, pattern_size, argv[i]);
     }
 
     return 0;
