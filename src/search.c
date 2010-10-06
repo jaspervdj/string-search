@@ -13,6 +13,7 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
     size_t result;
     ullong position = 1;
     int i;
+    int retain;
 
     buffer = create_buffer(pattern_size, &buffer_size);
 
@@ -25,12 +26,14 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
 
     create_search_data(pattern, pattern_size);
 
-    result = fill_next_buffer(buffer, buffer_size, 0, file);
+    retain = 0;
+    result = fill_next_buffer(buffer, buffer_size, retain, file);
     while(result == buffer_size) {
         search_buffer(pattern, pattern_size, file_name, buffer,
                 position, result);
-        result = fill_next_buffer(buffer, buffer_size, pattern_size - 1, file);
-        position += result;
+        retain = pattern_size - 1;
+        position += result - retain;
+        result = fill_next_buffer(buffer, buffer_size, retain, file);
     }
 
     search_buffer(pattern, pattern_size, file_name, buffer, position,
