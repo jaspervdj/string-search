@@ -23,6 +23,8 @@ struct search_data *create_search_data(const char *pattern, int pattern_size) {
     }
 
     data->match_column = 1 << pattern_size - 1;
+
+    return data;
 }
 
 /**
@@ -41,12 +43,8 @@ void search_buffer(struct search_data *data, const char *pattern,
     column = (buffer[0] == pattern[0]) ? 1 : 0;
 
     for(i = 1; i < buffer_size; i++) {
-        /* Shift-1 */
-        column <<= 1;
-        column |= 1;
-
-        /* And */
-        column &= data->character_columns[buffer[i]];
+        /* Shift-And */
+        column = ((column << 1) | 1) & data->character_columns[buffer[i]];
 
         /* Check result */
         if(column & data->match_column) {
