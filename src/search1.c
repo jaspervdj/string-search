@@ -5,29 +5,33 @@
 
 #include "common.h"
 
-typedef unsigned long long int column_type;
+struct search_data {
+    ullong *character_columns;
+    /* Column indicating a match */
+    ullong match_column;
+};
 
-column_type *character_columns;
-
-/* Column indicating a match */
-column_type match_column;
-
-void initialize_search(const char *pattern, int pattern_size) {
+struct search_data *create_search_data(const char *pattern, int pattern_size) {
+    struct search_data *data;
     int i;
-    character_columns = calloc(0xff, sizeof(column_type));
+
+    data = malloc(sizeof(struct search_data));
+
+    data->character_columns = calloc(0xff, sizeof(ullong));
     for(i = 0; i < pattern_size; i++) {
-        character_columns[pattern[i]] |= (1 << i);        
+        data->character_columns[pattern[i]] |= (1 << i);        
     }
 
-    match_column = 1 << pattern_size - 1;
+    data->match_column = 1 << pattern_size - 1;
 }
 
 /**
  * Search a given pattern in a given buffer.
  */
-void search_buffer(const char *pattern, int pattern_size, const char *file_name,
-        char *buffer, long long buffer_offset, int buffer_size) {
-    column_type column;    
+void search_buffer(struct search_data *data, const char *pattern,
+        int pattern_size, const char *file_name, char *buffer,
+        ullong buffer_offset, int buffer_size) {
+    ullong column;    
     int i;
 
     /* We want a buffer, really */
@@ -42,15 +46,16 @@ void search_buffer(const char *pattern, int pattern_size, const char *file_name,
         column |= 1;
 
         /* And */
-        column &= character_columns[buffer[i]];
+        column &= data->character_columns[buffer[i]];
 
         /* Check result */
-        if(column & match_column) {
-            printf("Match!\n");
+        if(column & data->match_column) {
+            print_match(file_name, buffer_offset + i - pattern_size + 1);
         }
     }
 }
 
-void end_search() {
-    free(character_columns);
+void free_search_data(struct search_data *data) {
+    free(data->character_columns);
+    free(data);
 }

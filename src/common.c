@@ -45,3 +45,7 @@ inline char *read_entire_file(const char *file_name, int *buffer_size) {
     fclose(file);
     return buffer;
 }
+
+void print_match(const char *file_name, ullong position) {
+    printf("%s:%lld\n", file_name, position);
+}

@@ -1,11 +1,20 @@
 #ifndef SEARCH0_H
 #define SEARCH0_H
 
-void intialize_search(const char *pattern, int pattern_size);
+#include "common.h"
 
-void search_buffer(const char *pattern, int pattern_size, const char *file_name,
-        char *buffer, long long buffer_offset, int buffer_size);
+/* Intermediate data used by the search. */
+struct search_data;
 
-void end_search();
+/* Initialize a search object. */
+struct search_data *create_search_data(const char *pattern, int pattern_size);
+
+/* Perform the actual search. */
+void search_buffer(struct search_data *data, const char *pattern,
+        int pattern_size, const char *file_name, char *buffer,
+        ullong buffer_offset, int buffer_size);
+
+/* Release the search data. */
+void free_search_data(struct search_data *data);
 
 #endif

@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+typedef unsigned long long ullong;
+
 /**
  * Keep retain bytes in the buffer, move them to the front and fill the
  * remainder with bytes read from the file.
@@ -20,5 +22,10 @@ char *create_buffer(int buffer_minimum_size, int *buffer_size);
  * size of the resulting buffer
  */
 char *read_entire_file(const char *file_name, int *buffer_size);
+
+/**
+ * Print a match at the given position in the given file.
+ */
+void print_match(const char *file_name, ullong position);
 
 #endif
