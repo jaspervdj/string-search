@@ -17,4 +17,7 @@ void search_buffer(struct search_data *data, const char *pattern,
 /* Release the search data. */
 void free_search_data(struct search_data *data);
 
+/* Main function. */
+int search(int argc, char **argv);
+
 #endif

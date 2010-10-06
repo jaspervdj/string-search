@@ -45,7 +45,7 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
     fclose(file);
 }
 
-int main(int argc, char **argv) {
+int search(int argc, char **argv) {
     int i;
     char *pattern;
     int pattern_size;

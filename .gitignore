@@ -6,3 +6,5 @@ CMakeCache.txt
 search0
 search1
 data
+*.hi
+*.o
