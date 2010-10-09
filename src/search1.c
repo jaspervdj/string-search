@@ -11,11 +11,16 @@ ullong match_column;
 struct search_data *create_search_data(const char *pattern, int pattern_size) {
     int i;
 
-    character_columns = calloc(0xff, sizeof(ullong));
+    /* Allocate room for the character columns. Set all bits to 1. */
+    character_columns = malloc(0xff * sizeof(ullong));
+    memset(character_columns, 0xff, 0xff * sizeof(ullong));
+
+    /* Set the correct patterns bits to 0. */
     for(i = 0; i < pattern_size; i++) {
-        character_columns[pattern[i]] |= (1 << i);        
+        character_columns[pattern[i]] &= ~(1 << i);        
     }
 
+    /* This column is a mask for a match. */
     match_column = 1 << pattern_size - 1;
 }
 
@@ -32,14 +37,14 @@ void search_buffer(const char *pattern,
     if(buffer_size <= 0 || pattern_size <= 0) return;
 
     /* Initialize the first column */
-    column = (buffer[0] == pattern[0]) ? 1 : 0;
+    column = (buffer[0] == pattern[0]) ? ~1 : ~0;
 
     for(i = 1; i < buffer_size; i++) {
         /* Shift-And */
-        column = ((column << 1) | 1) & character_columns[buffer[i]];
+        column = (column << 1) | character_columns[buffer[i]];
 
         /* Check result */
-        if(column & match_column) {
+        if(!(column & match_column)) {
             print_match(file_name, buffer_offset + i - pattern_size + 1);
         }
     }
