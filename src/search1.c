@@ -40,7 +40,7 @@ void search_buffer(const char *pattern,
     column = (buffer[0] == pattern[0]) ? ~1 : ~0;
 
     for(i = 1; i < buffer_size; i++) {
-        /* Shift-And */
+        /* Shift-Or */
         column = (column << 1) | character_columns[buffer[i]];
 
         /* Check result */
