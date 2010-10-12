@@ -1,6 +1,7 @@
 #include "common.h"
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 #include <stdlib.h>
 
 inline int fill_next_buffer(char *buffer, int buffer_size, int retain,
@@ -48,4 +49,18 @@ inline char *read_entire_file(const char *file_name, int *buffer_size) {
 
 void print_match(const char *file_name, ullong position) {
     printf("%s:%lld\n", file_name, position);
+}
+
+void to_binary(ullong n, char *buffer) {
+    int i;
+    int bits = sizeof(ullong) * CHAR_BIT;
+    ullong mask = 1;
+
+    /* Fill in the bytes */
+    for(i = bits - 1; i >= 0; i--) {
+        buffer[bits - 1 - i] = (n >> i) & mask ? '1' : '0';
+    }
+
+    /* Do not forget a trailing 0 byte */
+    buffer[bits] = '\0';
 }

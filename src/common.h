@@ -28,4 +28,9 @@ char *read_entire_file(const char *file_name, int *buffer_size);
  */
 void print_match(const char *file_name, ullong position);
 
+/**
+ * Convert to binary, for debugging purposes
+ */
+void to_binary(ullong n, char *buffer);
+
 #endif
