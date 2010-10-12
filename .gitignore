@@ -8,3 +8,6 @@ search1
 data
 *.hi
 *.o
+
+util/generate-text
+util/verify-matches

@@ -11,3 +11,4 @@ add_executable(bench0 src/search0.c src/search.c src/common.c src/bench.c)
 add_executable(bench1 src/search1.c src/search.c src/common.c src/bench.c)
 
 add_executable(util/generate-text util/generate-text.c)
+add_executable(util/verify-matches util/verify-matches.c src/common.c)
