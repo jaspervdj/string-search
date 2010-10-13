@@ -31,7 +31,8 @@ void search_buffer(const char *pattern,
         int pattern_size, const char *file_name, char *buffer,
         int buffer_size, ullong buffer_offset) {
     ullong column;    
-    int i;
+    const char *buffer_start = buffer;
+    const char *buffer_end = buffer + buffer_size;
 
     /* We want a buffer, really */
     if(buffer_size <= 0 || pattern_size <= 0) return;
@@ -39,14 +40,17 @@ void search_buffer(const char *pattern,
     /* Initialize the first column */
     column = (buffer[0] == pattern[0]) ? ~1 : ~0;
 
-    for(i = 1; i < buffer_size; i++) {
+    while(buffer <= buffer_end) {
         /* Shift-Or */
-        column = (column << 1) | character_columns[buffer[i]];
+        column = (column << 1) | character_columns[*buffer];
 
         /* Check result */
         if(!(column & match_column)) {
-            print_match(file_name, buffer_offset + i - pattern_size + 1);
+            print_match(file_name, buffer_offset + (buffer - buffer_start) -
+                    pattern_size + 1);
         }
+
+        buffer++;
     }
 }
 
