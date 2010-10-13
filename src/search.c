@@ -28,13 +28,12 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
     result = fill_next_buffer(buffer, buffer_size, 0, file);
     while(result == buffer_size) {
         search_buffer(pattern, pattern_size, file_name, buffer,
-                position, result);
+                result, position);
         position += result - pattern_size + 1;
         result = fill_next_buffer(buffer, buffer_size, pattern_size - 1, file);
     }
 
-    search_buffer(pattern, pattern_size, file_name, buffer, position,
-            result);
+    search_buffer(pattern, pattern_size, file_name, buffer, result, position);
 
     free_search_data();
 

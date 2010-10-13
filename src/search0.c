@@ -12,8 +12,8 @@ create_search_data(const char *pattern, int pattern_size) {
  * Search a given pattern in a given buffer.
  */
 void search_buffer(const char *pattern, int pattern_size,
-        const char *file_name, char *buffer,
-        ullong buffer_offset, int buffer_size) {
+        const char *file_name, char *buffer, int buffer_size,
+        ullong buffer_offset) {
     int i, j;
 
     for(i = 0; i + pattern_size - 1 < buffer_size; i++) {
