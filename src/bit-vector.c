@@ -12,14 +12,14 @@ bit_vector *create_bit_vector_one(int size) {
 }
 
 void bit_vector_shift_left_one(bit_vector *bv, int size) {
-    int i = 0;
+    int i;
 
-    while(i < size) {
+    /* For all elements in the vector... */
+    for(i = size - 1; i >= 0; i--) {
+        /* Shift */
         bv[i] <<= 1;
-        if(i + 1 < size) {
-            /* Carry */
-            bv[i] |= bv[i + 1] >> ULLONG_BITS - 1;
-        }
+        /* Carry */
+        if(i - 1 >= 0) bv[i] |= bv[i - 1] >> ULLONG_BITS - 1;
     }
 }
 
@@ -59,6 +59,9 @@ int main(int argc, char **argv) {
     print_bit_vector(bv, 4);
 
     bit_vector_set_zero(bv, 128);
+    print_bit_vector(bv, 4);
+
+    bit_vector_shift_left_one(bv, 4);
     print_bit_vector(bv, 4);
 
     printf("OK\n");
