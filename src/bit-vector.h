@@ -5,7 +5,7 @@
 
 typedef ullong bit_vector;
 
-bit_vector *create_bit_vector_one(int size);
+bit_vector *bit_vector_create_one(int size);
 
 /**
  * Shift the given bit vector to left by one.
@@ -27,8 +27,8 @@ void bit_vector_set_zero(bit_vector *bv, int position);
  */
 int bit_vector_is_zero(bit_vector *bv, int position);
 
-void free_bit_vector(bit_vector *bv);
+void bit_vector_free(bit_vector *bv);
 
-void print_bit_vector(bit_vector *bv, int size);
+void bit_vector_print(bit_vector *bv, int size);
 
 #endif

@@ -4,7 +4,7 @@
 #include "common.h"
 #include "bit-vector.h"
 
-bit_vector *create_bit_vector_one(int size) {
+bit_vector *bit_vector_create_one(int size) {
     bit_vector *bv = malloc(sizeof(ullong) * size);
     memset(bv, 0xff, sizeof(ullong) * size);
     return bv;
@@ -37,11 +37,11 @@ int bit_vector_is_zero(bit_vector *bv, int position) {
     return !(bv[i] & 1 << position - i * ULLONG_BITS);
 }
 
-void free_bit_vector(bit_vector *bv) {
+void bit_vector_free(bit_vector *bv) {
     free(bv);
 }
 
-void print_bit_vector(bit_vector *bv, int size) {
+void bit_vector_print(bit_vector *bv, int size) {
     int ullong_chars = ULLONG_BITS + 1;
     char *buffer = malloc(size * ullong_chars);
     int i;
