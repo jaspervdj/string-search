@@ -2,8 +2,11 @@
 #define COMMON_H
 
 #include <stdio.h>
+#include <limits.h>
 
 typedef unsigned long long ullong;
+
+#define ULLONG_BITS (sizeof(ullong) * CHAR_BIT)
 
 /**
  * Keep retain bytes in the buffer, move them to the front and fill the

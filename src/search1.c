@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-
 #include "common.h"
 
 ullong *character_columns;
