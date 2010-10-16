@@ -8,7 +8,7 @@
 int bit_vector_size;
 bit_vector **character_columns;
 
-struct search_data *create_search_data(const char *pattern, int pattern_size) {
+void search_create_bit_vector(const char *pattern, int pattern_size) {
     int i;
 
     /* Figure out how many elements we need in our vectors */
@@ -29,7 +29,7 @@ struct search_data *create_search_data(const char *pattern, int pattern_size) {
 /**
  * Search a given pattern in a given buffer.
  */
-void search_buffer(const char *pattern,
+void search_buffer_bit_vector(const char *pattern,
         int pattern_size, const char *file_name, char *buffer,
         int buffer_size, ullong buffer_offset) {
     bit_vector *column;    
@@ -60,7 +60,7 @@ void search_buffer(const char *pattern,
     bit_vector_free(column);
 }
 
-void free_search_data() {
+void search_free_bit_vector() {
     int i;
     for(i = 0; i < 0xff; i++) bit_vector_free(character_columns[i]);
     free(character_columns);

@@ -23,7 +23,7 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
     }
 #   endif
 
-    create_search_data(pattern, pattern_size);
+    search_create(pattern, pattern_size);
 
     result = fill_next_buffer(buffer, buffer_size, 0, file);
     while(result == buffer_size) {
@@ -35,7 +35,7 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
 
     search_buffer(pattern, pattern_size, file_name, buffer, result, position);
 
-    free_search_data();
+    search_free();
 
     free(buffer);
     fclose(file);

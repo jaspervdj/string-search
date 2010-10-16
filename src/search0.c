@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-create_search_data(const char *pattern, int pattern_size) {
+search_create(const char *pattern, int pattern_size) {
     return 0;
 }
 
@@ -26,5 +26,5 @@ void search_buffer(const char *pattern, int pattern_size,
     }
 }
 
-void free_search_data() {
+void search_free() {
 }

@@ -4,7 +4,7 @@
 #include "common.h"
 
 /* Initialize a search object. */
-void create_search_data(const char *pattern, int pattern_size);
+void search_create(const char *pattern, int pattern_size);
 
 /* Perform the actual search. */
 void search_buffer(const char *pattern,
@@ -12,7 +12,7 @@ void search_buffer(const char *pattern,
         int buffer_size, ullong buffer_offset);
 
 /* Release the search data. */
-void free_search_data();
+void search_free();
 
 /* Main function. */
 int search(int argc, char **argv);
