@@ -11,6 +11,9 @@ bit_vector *create_bit_vector_one(int size) {
     return bv;
 }
 
+/**
+ * Shift the given bit vector to left by one.
+ */
 void bit_vector_shift_left_one(bit_vector *bv, int size) {
     int i;
 
@@ -23,6 +26,17 @@ void bit_vector_shift_left_one(bit_vector *bv, int size) {
     }
 }
 
+/**
+ * Or the given bit vector with a given mask.
+ */
+void bit_vector_or(bit_vector *bv, int size, bit_vector *mask) {
+    int i;
+    for(i = 0; i < size; i++) bv[i] |= mask[i];
+}
+
+/**
+ * Set a given position in the bit vector to zero.
+ */
 void bit_vector_set_zero(bit_vector *bv, int position) {
     int i = position / ULLONG_BITS;
     bv[i] &= ~(1 << position - i * ULLONG_BITS);
