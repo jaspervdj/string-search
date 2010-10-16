@@ -16,11 +16,11 @@ void search_create_ullong(const char *pattern, int pattern_size) {
 
     /* Set the correct patterns bits to 0. */
     for(i = 0; i < pattern_size; i++) {
-        character_columns[pattern[i]] &= ~(1 << i);        
+        character_columns[pattern[i]] &= ~ULLONG_BIT_AT(i);        
     }
 
     /* This column is a mask for a match. */
-    match_column = 1 << pattern_size - 1;
+    match_column = ULLONG_BIT_AT(pattern_size - 1);
 }
 
 /**

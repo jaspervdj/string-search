@@ -8,6 +8,8 @@ typedef unsigned long long ullong;
 
 #define ULLONG_BITS (sizeof(ullong) * CHAR_BIT)
 
+#define ULLONG_BIT_AT(x) ((ullong) 1 << x)
+
 /**
  * Keep retain bytes in the buffer, move them to the front and fill the
  * remainder with bytes read from the file.

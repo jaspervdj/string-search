@@ -14,6 +14,10 @@ void search_create_bit_vector(const char *pattern, int pattern_size) {
     /* Figure out how many elements we need in our vectors */
     bit_vector_size = (pattern_size + ULLONG_BITS - 1) / ULLONG_BITS;
 
+#   ifdef DEBUG
+    printf("Using %d ullong elements in the bit vector.\n", bit_vector_size);
+#   endif
+
     /* Allocate room for the character columns. */
     character_columns = malloc(0xff * sizeof(bit_vector*));
     for(i = 0; i < 0xff; i++) {
