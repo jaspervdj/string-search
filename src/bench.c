@@ -16,6 +16,8 @@ int main(int argc, char **argv) {
     for(i = 0; i < runs; i++) {
         double start, stop;
 
+        fprintf(stderr, "Starting run %2d/%d...\n", i, runs);
+
         start = get_time();
         search(argc, argv);
         stop = get_time();
