@@ -10,7 +10,7 @@ bit_vector *bit_vector_create_one(int size) {
     return bv;
 }
 
-void bit_vector_shift_left_one(bit_vector *bv, int size) {
+void bit_vector_shift_or(bit_vector *bv, int size, bit_vector *mask) {
     int i;
 
     /* For all elements in the vector... */
@@ -19,12 +19,9 @@ void bit_vector_shift_left_one(bit_vector *bv, int size) {
         bv[i] <<= 1;
         /* Carry */
         if(i - 1 >= 0) bv[i] |= bv[i - 1] >> ULLONG_BITS - 1;
+        /* Or */
+        bv[i] |= mask[i];
     }
-}
-
-void bit_vector_or(bit_vector *bv, int size, bit_vector *mask) {
-    int i;
-    for(i = 0; i < size; i++) bv[i] |= mask[i];
 }
 
 void bit_vector_set_zero(bit_vector *bv, int position) {

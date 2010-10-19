@@ -13,11 +13,6 @@ bit_vector *bit_vector_create_one(int size);
 void bit_vector_shift_left_one(bit_vector *bv, int size);
 
 /**
- * Or the given bit vector with a given mask.
- */
-void bit_vector_or(bit_vector *bv, int size, bit_vector *mask);
-
-/**
  * Set a given position in the bit vector to zero.
  */
 void bit_vector_set_zero(bit_vector *bv, int position);
