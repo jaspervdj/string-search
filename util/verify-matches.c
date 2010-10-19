@@ -10,10 +10,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "common.h"
+#include "verify-matches.h"
 
-/**
- * Parse the given line of format "file:position" into the two fields.
- */
 void parse_line(char *line, char *file, unsigned long long *position) {
     /* Read the file part */
     int i = 0;

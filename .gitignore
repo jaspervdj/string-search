@@ -10,4 +10,5 @@ data
 *.o
 
 util/generate-text
+util/generate-text-and-matches
 util/verify-matches
