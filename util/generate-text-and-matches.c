@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
         fwrite("\0", 1, 1, text_file);
 
         /* Update position */
-        position += pattern_size;
+        position += pattern_size + 1;
     }
 
     free(pattern);
