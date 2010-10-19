@@ -10,8 +10,7 @@ bit_vector *bit_vector_create_one(int size) {
     return bv;
 }
 
-void bit_vector_shift_or(bit_vector *bv, const int size,
-        const bit_vector *mask) {
+void bit_vector_shift_or(bit_vector *bv, int size, bit_vector *mask) {
     int i;
 
     /* For all elements in the vector... */
@@ -23,17 +22,17 @@ void bit_vector_shift_or(bit_vector *bv, const int size,
     bv[0] = (bv[0] << 1) | mask[0];
 }
 
-void bit_vector_set_zero(bit_vector *bv, const int position) {
+void bit_vector_set_zero(bit_vector *bv, int position) {
     int i = position / ULLONG_BITS;
     bv[i] &= ~ULLONG_BIT_AT(position - i * ULLONG_BITS);
 }
 
-int bit_vector_is_zero(const bit_vector *bv, const int position) {
+int bit_vector_is_zero(bit_vector *bv, int position) {
     int i = position / ULLONG_BITS;
     return !(bv[i] & 1 << position - i * ULLONG_BITS);
 }
 
-void bit_vector_free(const bit_vector *bv) {
+void bit_vector_free(bit_vector *bv) {
     free(bv);
 }
 
