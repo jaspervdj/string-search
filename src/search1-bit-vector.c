@@ -50,7 +50,7 @@ void search_buffer_bit_vector(const char *pattern,
     while(buffer < buffer_end) {
         /* Shift-Or */
         bit_vector_shift_or(column, bit_vector_size,
-                character_columns[*buffer]);
+                character_columns[(unsigned char) *buffer]);
         // bit_vector_shift_left_one(column, bit_vector_size);
         // bit_vector_or(column, bit_vector_size, character_columns[*buffer]);
 

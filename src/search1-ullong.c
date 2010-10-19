@@ -41,7 +41,7 @@ void search_buffer_ullong(const char *pattern,
 
     while(buffer < buffer_end) {
         /* Shift-Or */
-        column = (column << 1) | character_columns[*buffer];
+        column = (column << 1) | character_columns[(unsigned char) *buffer];
 
         /* Check result */
         if(!(column & match_column)) {
