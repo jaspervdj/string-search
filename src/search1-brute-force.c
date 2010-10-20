@@ -7,7 +7,7 @@
 ullong *character_columns;
 ullong match_column;
 
-void search_create_ullong(const char *pattern, int pattern_size) {
+void search_create_brute_force(const char *pattern, int pattern_size) {
     int i;
 
     /* Allocate room for the character columns. Set all bits to 1. */
@@ -15,18 +15,18 @@ void search_create_ullong(const char *pattern, int pattern_size) {
     memset(character_columns, 0xff, 0x100 * sizeof(ullong));
 
     /* Set the correct patterns bits to 0. */
-    for(i = 0; i < pattern_size; i++) {
+    for(i = 0; i < MIN(pattern_size, ULLONG_BITS); i++) {
         character_columns[pattern[i]] &= ~ULLONG_BIT_AT(i);        
     }
 
     /* This column is a mask for a match. */
-    match_column = ULLONG_BIT_AT(pattern_size - 1);
+    match_column = ULLONG_BIT_AT(MIN(pattern_size, ULLONG_BITS) - 1);
 }
 
 /**
  * Search a given pattern in a given buffer.
  */
-void search_buffer_ullong(const char *pattern,
+void search_buffer_brute_force(const char *pattern,
         int pattern_size, const char *file_name, char *buffer,
         int buffer_size, ullong buffer_offset) {
     ullong column;    
@@ -43,6 +43,15 @@ void search_buffer_ullong(const char *pattern,
         /* Shift-Or */
         column = (column << 1) | character_columns[(unsigned char) *buffer];
 
+        /*
+        char *tmp = malloc(128);
+        to_binary(character_columns[(unsigned char) *buffer], tmp);
+        printf("Char: %c\n", *buffer);
+        printf("Decimal: %d\n", (unsigned char) *buffer);
+        printf("Found: %s\n", tmp);
+        free(tmp);
+        */
+
         /* Check result */
         if(!(column & match_column)) {
             print_match(file_name, buffer_offset + (buffer - buffer_start) -
@@ -53,6 +62,6 @@ void search_buffer_ullong(const char *pattern,
     }
 }
 
-void search_free_ullong() {
+void search_free_brute_force() {
     free(character_columns);
 }

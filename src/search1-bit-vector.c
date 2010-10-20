@@ -19,8 +19,8 @@ void search_create_bit_vector(const char *pattern, int pattern_size) {
 #   endif
 
     /* Allocate room for the character columns. */
-    character_columns = malloc(0xff * sizeof(bit_vector*));
-    for(i = 0; i < 0xff; i++) {
+    character_columns = malloc(0x100 * sizeof(bit_vector*));
+    for(i = 0; i < 0x100; i++) {
         character_columns[i] = bit_vector_create_one(bit_vector_size);
     }
 
