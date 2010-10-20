@@ -41,27 +41,21 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
     fclose(file);
 }
 
-int search(int argc, char **argv) {
+int search(char *pattern_file_name, char **file_names, int file_names_size) {
     int i;
     char *pattern;
     int pattern_size;
 
-    /* Check that we have enough arguments. If not, bail out. */
-    if(argc < 3) {
-        printf("Usage: %s <pattern file> <file> [<file> ...]\n", argv[0]);
-        return 1;
-    }
-
     /* Inspect the pattern. */
-    pattern = read_entire_file(argv[1], &pattern_size);
+    pattern = read_entire_file(pattern_file_name, &pattern_size);
 
 #   ifdef DEBUG
     printf("Searching for: %s\n", pattern);
 #   endif
 
     /* Now, loop over the files. */
-    for(i = 2; i < argc; i++) {
-        search_file(pattern, pattern_size, argv[i]);
+    for(i = 0; i < file_names_size; i++) {
+        search_file(pattern, pattern_size, file_names[i]);
     }
 
     free(pattern);

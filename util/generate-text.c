@@ -18,10 +18,10 @@
  * Print usage information
  */
 void print_usage(int argc, char **argv) {
-    printf("Usage: %s [options]\n", argv[0]);
+    printf("USAGE\n");
+    printf("%s [options]\n", argv[0]);
     printf("\n");
     printf("OPTIONS\n");
-    printf("\n");
     printf("-a             Only use a-z for the text (Default: bytes)\n");
     printf("-d             Generate a DNA string (ACGT) (Default: bytes)\n");
     printf("-o file        Output file (Default: stdout)\n");
