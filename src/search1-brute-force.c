@@ -43,19 +43,15 @@ void search_buffer_brute_force(const char *pattern,
         /* Shift-Or */
         column = (column << 1) | character_columns[(unsigned char) *buffer];
 
-        /*
-        char *tmp = malloc(128);
-        to_binary(character_columns[(unsigned char) *buffer], tmp);
-        printf("Char: %c\n", *buffer);
-        printf("Decimal: %d\n", (unsigned char) *buffer);
-        printf("Found: %s\n", tmp);
-        free(tmp);
-        */
-
         /* Check result */
         if(!(column & match_column)) {
-            print_match(file_name, buffer_offset + (buffer - buffer_start) -
-                    pattern_size + 1);
+            /* Further brute-force matching */
+            if(pattern_size <= ULLONG_BITS ||
+                    !memcmp(buffer + 1, pattern + ULLONG_BITS,
+                        pattern_size - ULLONG_BITS)) {
+                print_match(file_name, buffer_offset + (buffer - buffer_start) -
+                        MIN(pattern_size, ULLONG_BITS) + 1);
+            }
         }
 
         buffer++;
