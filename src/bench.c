@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <stdlib.h>
+#include <math.h>
+#include "common.h"
 #include "search.h"
 
 /**
@@ -41,8 +43,12 @@ int main(int argc, char **argv) {
     int quiet = 0;
     int warmup_runs = 10;
     int opt_code;
+    int outliers = 0;
 
+    double *run_times = malloc(runs * sizeof(double));
+    double sum = 0.0;
     double mean = 0.0;
+    double standard_deviation = 0.0;
     int i;
 
     while((opt_code = getopt(argc, argv, "hn:o:qw:")) != -1) {
@@ -69,27 +75,42 @@ int main(int argc, char **argv) {
 
     /* Warmup runs */
     for(i = 0; i < warmup_runs; i++) {
-        if(!quiet) fprintf(out, "Warmup %2d/%d...\n", i + 1, warmup_runs);
+        if(!quiet) fprintf(out, "Warmup: %2d/%d...\n", i + 1, warmup_runs);
         search(argv[optind], argv + optind + 1, argc - optind - 1);
     }
 
     /* Timed runs */
     for(i = 0; i < runs; i++) {
-        double run_time, start, stop;
+        double start, stop;
 
-        if(!quiet) fprintf(out, "Run %2d/%d...\n", i + 1, runs);
+        if(!quiet) fprintf(out, "Run: %2d/%d...\n", i + 1, runs);
 
         start = get_time();
         search(argv[optind], argv + optind + 1, argc - optind - 1);
         stop = get_time();
-        run_time = stop - start;
+        run_times[i] = stop - start;
 
-        if(!quiet) fprintf(out, "Time: %f\n", run_time);
-        mean += run_time / (double) runs;
+        if(!quiet) fprintf(out, "Time: %f\n", run_times[i]);
+        mean += run_times[i] / (double) runs;
     }
     
-    /* Result */
+    /* Calculate mean */
     fprintf(out, "Mean: %f\n", mean);
+
+    /* Calculate standard deviation */
+    for(i = 0; i < runs; i++) {
+        standard_deviation += SQUARE(run_times[i] - mean);
+    }
+    standard_deviation = sqrt(standard_deviation / runs);
+    fprintf(out, "Standard deviation: %f\n", standard_deviation);
+
+    /* Calculate outliers */
+    for(i = 0; i < runs; i++) {
+        if(ABS(mean - run_times[i]) > standard_deviation * 3) outliers++;
+    }
+    fprintf(out, "Outliers: %d\n", outliers);
+
+    free(run_times);
 
     return 0;
 }

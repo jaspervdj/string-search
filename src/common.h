@@ -10,7 +10,10 @@ typedef unsigned long long ullong;
 
 #define ULLONG_BIT_AT(x) ((ullong) 1 << x)
 
+/* Common math macro's */
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
+#define SQUARE(a) ((a) * (a))
+#define ABS(a) ((a) > 0 ? (a) : (-(a)))
 
 /**
  * Keep retain bytes in the buffer, move them to the front and fill the
