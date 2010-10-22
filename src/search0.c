@@ -4,8 +4,7 @@
 
 #include "common.h"
 
-search_create(const char *pattern, int pattern_size) {
-    return 0;
+void search_create(const char *pattern, int pattern_size) {
 }
 
 /**
