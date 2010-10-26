@@ -6,7 +6,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <signal.h>
 #include "common.h"
+
+/* Flag indicating that the generator is running */
+int running;
 
 /**
  * Generate a list of all unique characters in a string.
@@ -36,6 +40,14 @@ char *chars_in_string(char *string, int string_size, int *list_size) {
  */
 char random_char(char *list, int list_size) {
     return list[rand () % list_size];
+}
+
+/**
+ * Signal handler
+ */
+void stop_running_handler(int code) {
+    printf("Signal received, closing...\n");
+    running = 0;
 }
 
 int main(int argc, char **argv) {
@@ -72,8 +84,10 @@ int main(int argc, char **argv) {
     /* Print the first part */
     fwrite(buffer, 1, pattern_size - 1, text_file);
 
-    /* Continue forever */
-    while(1) {
+    /* Continue until interrupted */
+    running = 1;
+    signal(SIGINT, stop_running_handler);
+    while(running) {
         /* Write the character */
         fwrite(buffer + pattern_size - 1, 1, 1, text_file);
 
@@ -95,4 +109,6 @@ int main(int argc, char **argv) {
     fclose(matches_file);
     free(buffer);
     free(list);
+
+    return 0;
 }
