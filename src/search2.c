@@ -21,7 +21,7 @@ void search_create(const char *pattern, int pattern_size) {
     int equal = 0;
     int i;
 
-    skip_table = malloc(pattern_size * sizeof(int));
+    skip_table = malloc((pattern_size + 1) * sizeof(int));
     skip_table[0] = skip_table[1] = 1;
 
     while(offset < pattern_size) {
