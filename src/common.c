@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "common.h"
 
+#define DEFAULT_BUFFER_SIZE (16 * 4096)
+
 inline int fill_next_buffer(char *buffer, int buffer_size, int retain,
         FILE *file) {
     /* Copy the bytes we have to retain. */
@@ -14,7 +16,7 @@ inline int fill_next_buffer(char *buffer, int buffer_size, int retain,
 }
 
 inline char *create_buffer(int buffer_minimum_size, int *buffer_size) {
-    int size = 16 * 4096;
+    int size = DEFAULT_BUFFER_SIZE;
     while(size < buffer_minimum_size) size <<= 2;
     *buffer_size = size;
 #   ifdef DEBUG
