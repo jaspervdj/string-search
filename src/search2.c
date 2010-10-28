@@ -9,24 +9,24 @@
 
 int *skip_table;
 
-int first_mismatch(const char *pattern, int pattern_size, const char *buffer,
-        int buffer_offset, int assume_equal) {
-    int i = assume_equal;
-    while(i < pattern_size && pattern[i] == buffer[buffer_offset + i]) i++;
-    return i;
+/* Macro to get the first mismatch. The result is stored in the i variable. */
+#define FIRST_MISMATCH(pattern, pattern_size, buffer, buffer_offset            \
+        , assume_equal, i) {                                                   \
+    i = assume_equal;                                                          \
+    while(i < pattern_size && pattern[i] == buffer[buffer_offset + i]) i++;    \
 }
 
 void search_create(const char *pattern, int pattern_size) {
     int offset = 1;
     int equal = 0;
     int i;
+    int mismatch;
 
     skip_table = malloc((pattern_size + 1) * sizeof(int));
     skip_table[0] = skip_table[1] = 1;
 
     while(offset < pattern_size) {
-        int mismatch = first_mismatch(pattern, pattern_size, pattern, offset,
-                equal);
+        FIRST_MISMATCH(pattern, pattern_size, pattern, offset, equal, mismatch);
 
         if(mismatch == 0) {
             skip_table[offset + 1] = offset + 1;   
@@ -49,9 +49,10 @@ void search_buffer(const char *pattern, int pattern_size,
         ullong buffer_offset) {
     int i = 0;
     int equal = 0;
+    int mismatch;
 
     while(i + pattern_size - 1 < buffer_size) {
-        int mismatch = first_mismatch(pattern, pattern_size, buffer, i, equal);
+        FIRST_MISMATCH(pattern, pattern_size, buffer, i, equal, mismatch);
 
         /* Match found */
         if(mismatch >= pattern_size) {
