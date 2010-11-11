@@ -1,2 +1,2 @@
-search1:search1.c common.c search.c main.c
-search2:search2.c common.c search.c main.c
+search1:main.c search1.c common.c search.c
+search2:main.c search2.c common.c search.c
