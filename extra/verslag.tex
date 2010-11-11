@@ -32,19 +32,55 @@ interface.
 Een abstracte interface wordt beschreven in \verb#src/search.h#. Elk algoritme
 dient deze interface te implementeren. De interface bevat volgende methoden:
 
-\begin{enumerate}
+\begin{itemize}
     \item \verb#search_create#: Initialiseert data voor doorzoeken. Afhankelijk
     van het algoritme zal deze functie een aantal variabelen initialiseren.
     \item \verb#search_buffer#: Doorzoek \'e\'en buffer naar het gegeven
-    pattern.
+    zoekpatroon.
     \item \verb#search_free#: Ruim op na het zoeken. Hier kan het algoritme
     bepaalde variabelen dealloceren.
-\end{enumerate}
+\end{itemize}
 
 Deze interface laat toe om elk gevraagd zoekalgoritme te implementeren.
 
-\subsection{Buffering}
+\subsection{Werken met buffers}
 
-Bla bla bla
+Omdat \'e\'en van de vereisten is dat het doorzoeken van grote files mogelijk
+is, gebruiken we buffers. In deze subsectie argumenteren we aan dat we een
+willekeurig exact string matching algoritme dat werkt op een simpele array
+gemakkelijk kunnen uitbreiden tot een algoritme dat op grote files werkt via
+buffers.
+
+Onze strategie verloopt als volgt:
+
+\textbf{Gegeven}:
+
+Een initieel lege buffer $b$ met $b_{size}$ de grootte van deze buffer, en
+$b_{used}$ het aantal gebruikte tekens in deze buffer. Laat $p$ ons zoekpatroon
+zijn met $p_{size}$ de lengte van dit zoekpatroon. Verder is $t$ de te
+doorzoeken tekst en $a$ het gebruikte algoritme.
+
+\textbf{Er geldt}:
+
+\begin{itemize}
+    \item initieel is de buffer leeg, dus $b_{used} = 0$;
+    \item het patroon moet in de buffer passen, dus $p_{size} \leq b_{size}$.
+\end{itemize}
+
+\textbf{Algoritme}:
+
+\begin{itemize}
+    \item Zolang we het einde van de te doorzoeken tekst niet hebben bereikt,
+    dus zolang $t$ niet leeg is:
+    \begin{itemize}
+        \item Verplaats de eerste $b_{size} - b_{used}$ tekens van $t$ naar de
+        buffer $b$, de eerste $b_{used}$ tekens van $b$ blijven dus behouden.
+        \item Doorzoek $b$ met het gegeven algoritme $a$.
+        \item Indien er een match begint op \'e\'en van de
+        laatste $p_{size} - 1$ posities in de buffer, kan deze niet gedetecteerd
+        worden. Daarom verplaatsen we nu de laatste $p_{size} - 1$ tekens naar
+        het begin van $b$. Nu geldt dat $b_{used} = p_{size} - 1$.
+    \end{itemize}
+\end{itemize}
 
 \end{document}
