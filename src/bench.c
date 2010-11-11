@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "common.h"
-#include "search.h"
+#include "search-files.h"
 
 /**
  * A more precise verion of time()
@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
     /* Warmup runs */
     for(i = 0; i < warmup_runs; i++) {
         if(!quiet) fprintf(out, "Warmup: %2d/%d...\n", i + 1, warmup_runs);
-        search(argv[optind], argv + optind + 1, argc - optind - 1);
+        search_files(argv[optind], argv + optind + 1, argc - optind - 1);
     }
 
     /* Timed runs */
@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
         if(!quiet) fprintf(out, "Run: %2d/%d...\n", i + 1, runs);
 
         start = get_time();
-        search(argv[optind], argv + optind + 1, argc - optind - 1);
+        search_files(argv[optind], argv + optind + 1, argc - optind - 1);
         stop = get_time();
         run_times[i] = stop - start;
 

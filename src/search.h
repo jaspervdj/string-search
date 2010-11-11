@@ -14,7 +14,4 @@ void search_buffer(const char *pattern,
 /* Release the search data. */
 void search_free();
 
-/* Main function. */
-int search(char *pattern_file_name, char **file_names, int file_names_size);
-
 #endif

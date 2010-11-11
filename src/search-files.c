@@ -41,7 +41,8 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
     fclose(file);
 }
 
-int search(char *pattern_file_name, char **file_names, int file_names_size) {
+int search_files(char *pattern_file_name, char **file_names,
+        int file_names_size) {
     int i;
     char *pattern;
     int pattern_size;

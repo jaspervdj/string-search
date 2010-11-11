@@ -1,4 +1,4 @@
-#include "search.h"
+#include "search-files.h"
 
 int main(int argc, char **argv) {
     /* Check that we have enough arguments. If not, bail out. */
@@ -7,5 +7,5 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    return search(argv[1], argv + 2, argc - 2);
+    return search_files(argv[1], argv + 2, argc - 2);
 }
