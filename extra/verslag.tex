@@ -58,7 +58,7 @@ Onze strategie verloopt als volgt:
 Een initieel lege buffer $b$ met $b_{size}$ de grootte van deze buffer, en
 $b_{used}$ het aantal gebruikte tekens in deze buffer. Laat $p$ ons zoekpatroon
 zijn met $p_{size}$ de lengte van dit zoekpatroon. Verder is $t$ de te
-doorzoeken tekst en $a$ het gebruikte algoritme.
+doorzoeken tekst (met lengte $t_{size}$) en $a$ het gebruikte algoritme.
 
 \textbf{Er geldt}:
 
@@ -82,5 +82,18 @@ doorzoeken tekst en $a$ het gebruikte algoritme.
         het begin van $b$. Nu geldt dat $b_{used} = p_{size} - 1$.
     \end{itemize}
 \end{itemize}
+
+Er is dus telkens een zeker overlap van $p_{size} - 1$ tekens, die (afhankelijk
+van het algoritme) eventueel 2 keer doorzocht wordt. Een slechtste geval analyse 
+geeft ons dat de maximale overhead gegeven wordt door:
+
+\begin{equation*}
+\left( \lceil \frac{t_{size}}{b_{size}} \rceil - 1 \right)
+    \cdot \left( p_{size} - 1 \right)
+\end{equation*}
+
+Aangezien $p_{size}$ en $t_{size}$ vastliggen, is $b_{size}$ de enige factor
+waarmee we de overhead kunnen be\"invloeden. Om de overhead te minimaliseren,
+moeten we $b_{size}$ zo groot mogelijk kiezen.
 
 \end{document}
