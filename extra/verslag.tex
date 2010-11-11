@@ -1,0 +1,50 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[dutch]{babel}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{a4wide}
+\usepackage{xltxtra}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+
+\setmainfont{Bitstream Vera Serif}
+
+\title{Project Algoritmen en Datastructuren III}
+\author{Jasper Van der Jeugt}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Structuur van de code}
+
+\subsection{Verschillende implementaties, dezelfde interface}
+
+De opgave bestaat eruit om verschillende tools te schrijven met hetzelfde nut,
+enkel het gebruikte algoritme is verschillend. Om zoveel mogelijk
+code-duplicatie te vermijden, scheiden we daarom de implementatie van de
+interface.
+
+Een abstracte interface wordt beschreven in \verb#src/search.h#. Elk algoritme
+dient deze interface te implementeren. De interface bevat volgende methoden:
+
+\begin{enumerate}
+    \item \verb#search_create#: Initialiseert data voor doorzoeken. Afhankelijk
+    van het algoritme zal deze functie een aantal variabelen initialiseren.
+    \item \verb#search_buffer#: Doorzoek \'e\'en buffer naar het gegeven
+    pattern.
+    \item \verb#search_free#: Ruim op na het zoeken. Hier kan het algoritme
+    bepaalde variabelen dealloceren.
+\end{enumerate}
+
+Deze interface laat toe om elk gevraagd zoekalgoritme te implementeren.
+
+\subsection{Buffering}
+
+Bla bla bla
+
+\end{document}

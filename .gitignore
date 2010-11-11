@@ -6,9 +6,18 @@ CMakeCache.txt
 
 search0
 search1
+search2
+bench0
+bench1
+bench2
 data
 *.hi
 *.o
+
+extra/verslag.aux
+extra/verslag.log
+extra/verslag.pdf
+extra/verslag.toc
 
 util/generate-text
 util/generate-text-and-matches
