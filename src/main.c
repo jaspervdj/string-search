@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "search-files.h"
 
 int main(int argc, char **argv) {
