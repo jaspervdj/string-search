@@ -14,3 +14,10 @@ def bench benchmark, pattern, text
     mean = (out.lines.grep /^Mean: /).first.gsub /^Mean: /, ""
     mean.to_f
 end
+
+def with_file file_name
+    content = File.read file_name
+    File.open file_name, "w" do |file|
+        file.write(yield content)
+    end
+end
