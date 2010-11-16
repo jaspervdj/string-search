@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "common.h"
-#include "verify-matches.h"
 
 void parse_line(char *line, char *file, unsigned long long *position) {
     /* Read the file part */
