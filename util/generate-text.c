@@ -6,13 +6,11 @@
 #include <stdio.h>
 #include <time.h>
 #include <limits.h>
+#include <string.h>
+#include "random-text.h"
 
 #define BUFFER_SIZE 1024
 #define DEFAULT_CHUNKS 4
-
-#define TEXT_TYPE_BYTES 0
-#define TEXT_TYPE_ALPHA 1
-#define TEXT_TYPE_DNA   2
 
 /**
  * Print usage information
@@ -22,46 +20,17 @@ void print_usage(int argc, char **argv) {
     printf("%s [options]\n", argv[0]);
     printf("\n");
     printf("OPTIONS\n");
-    printf("-a             Only use a-z for the text (Default: bytes)\n");
-    printf("-d             Generate a DNA string (ACGT) (Default: bytes)\n");
-    printf("-o file        Output file (Default: stdout)\n");
-    printf("-s size        Number of %d-byte text chunks (Default: %d)\n",
+    printf("-c string  Use only the characters which are in string\n");
+    printf("-o file    Output file (Default: stdout)\n");
+    printf("-s size    Number of %d-byte text chunks (Default: %d)\n",
             BUFFER_SIZE, DEFAULT_CHUNKS);
-}
-
-/**
- * Generate a random char
- */
-inline unsigned char random_char(int text_type) {
-    switch(text_type) {
-        case TEXT_TYPE_ALPHA:
-            /* Use both lower and upper case */
-            switch(rand() % 2) {
-                case 0:
-                    return 'a' + rand() % ('z' - 'a');
-                case 1:
-                    return 'A' + rand() % ('Z' - 'A');
-            }
-        case TEXT_TYPE_DNA:
-            switch(rand() % 4) {
-                case 0:
-                    return 'A';
-                case 1:
-                    return 'C';
-                case 2:
-                    return 'G';
-                case 3:
-                    return 'T';
-            }
-        case TEXT_TYPE_BYTES: default:
-            return rand() % CHAR_MAX;
-    }
 }
 
 /**
  * Generate random text
  */
-void generate_text(int text_type, unsigned long long size, FILE *out) {
+void generate_text(char *list, int list_size,
+        unsigned long long size, FILE *out) {
     /* A buffer */
     unsigned char *buffer = malloc(BUFFER_SIZE * sizeof(unsigned char));
     unsigned long long i;
@@ -74,7 +43,7 @@ void generate_text(int text_type, unsigned long long size, FILE *out) {
         int j;
         /* Fill the buffer */  
         for(j = 0; j < BUFFER_SIZE; j++) {
-            buffer[j] = random_char(text_type);
+            buffer[j] = random_char(list, list_size);
         }
 
         /* Flush the buffer */
@@ -89,23 +58,21 @@ void generate_text(int text_type, unsigned long long size, FILE *out) {
  * Main function
  */
 int main(int argc, char **argv) {
-    /* Text type */
-    int text_type = TEXT_TYPE_BYTES;
     /* Output file */
     FILE *out = stdout;
     /* Size in KiB */
     unsigned long long size = DEFAULT_CHUNKS;
     /* Option parsing return code */
     int opt_code;
+    /* List of characters to use */
+    char *list = 0;
+    int list_size;
 
     /* Parse options */
-    while((opt_code = getopt(argc, argv, "adho:s:")) != -1) {
+    while((opt_code = getopt(argc, argv, "c:ho:s:")) != -1) {
         switch(opt_code) {
-            case 'a':
-                text_type = TEXT_TYPE_ALPHA;
-                break;
-            case 'd':
-                text_type = TEXT_TYPE_DNA;
+            case 'c':
+                list = chars_in_string(optarg, strlen(optarg), &list_size);
                 break;
             case 'h':
                 print_usage(argc, argv); 
@@ -121,8 +88,19 @@ int main(int argc, char **argv) {
         }
     }
 
+    /* No string given, use default */
+    if(!list) {
+        int i;
+        list = malloc(0x100);
+        list_size = 0x100;
+        for(i = 0; i < list_size; i++) list[i] = i;
+    }
+
     /* Generate the actual text */
-    generate_text(text_type, size, out);
+    generate_text(list, list_size, size, out);
+
+    /* Clean up */
+    free(list);
 
     return 0;
 }
