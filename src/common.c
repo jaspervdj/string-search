@@ -41,9 +41,11 @@ inline char *read_entire_file(const char *file_name, int *buffer_size) {
     *buffer_size = ftell(file);
     fseek(file, 0, SEEK_SET);
 
-    /* Put the file in the buffer */
-    buffer = malloc(*buffer_size);
+    /* Put the file in the buffer. The '\0' termination is not strictly
+     * necessary, but it helps if we want to print out the file contents. */
+    buffer = malloc(*buffer_size + 1);
     fread(buffer, 1, *buffer_size, file);
+    buffer[*buffer_size] = '\0';
 
     fclose(file);
     return buffer;
