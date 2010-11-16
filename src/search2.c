@@ -16,6 +16,20 @@ int *skip_table;
     while(i < pattern_size && pattern[i] == buffer[buffer_offset + i]) i++;    \
 }
 
+/* Used for debugging purposes. */
+void print_skip_table(const char *pattern, int pattern_size) {
+    int i;
+    printf("Dumping skip table:\n");
+
+    /* Print a header */
+    for(i = 0; i < pattern_size; i++) printf("%3c", pattern[i]);
+    printf("\n");
+
+    /* Print the actual numbers */
+    for(i = 0; i < pattern_size; i++) printf("%3d", skip_table[i]);
+    printf("\n");
+}
+
 void search_create(const char *pattern, int pattern_size) {
     int offset = 1;
     int equal = 0;
@@ -39,6 +53,10 @@ void search_create(const char *pattern, int pattern_size) {
 
         offset += skip_table[mismatch];
     }
+
+#   ifdef DEBUG
+    print_skip_table(pattern, pattern_size);
+#   endif
 }
 
 /**
