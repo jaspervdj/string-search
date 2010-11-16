@@ -31,22 +31,30 @@ void parse_line(char *line, char *file, unsigned long long *position) {
  */
 void verify_match(char *pattern, int pattern_size, char *file_name,
         unsigned long long position) {
-    /* Open the file and allocate some room for the data */
+    /* Open the file */
     FILE *file = fopen(file_name, "r");
-    char *match = malloc(pattern_size * sizeof(char));
 
-    /* Seek and read the possible match */
-    fseek(file, position - 1, SEEK_SET);
-    fread(match, sizeof(char), pattern_size, file);
+    /* Check the file */
+    if(file) {
+        /* Allocate some room for the data in the file */
+        char *match = malloc(pattern_size * sizeof(char));
 
-    /* Check the match */
-    if(strncmp(pattern, match, pattern_size)) {
-        printf("%s:%llu FALSE\n", file_name, position);
+        /* Seek and read the possible match */
+        fseek(file, position - 1, SEEK_SET);
+        fread(match, sizeof(char), pattern_size, file);
+
+        /* Check the match */
+        if(strncmp(pattern, match, pattern_size)) {
+            printf("%s:%llu FALSE\n", file_name, position);
+        }
+
+        /* Free up */
+        fclose(file);
+        free(match);
+    /* Something went wrong */
+    } else {
+        printf("%s:llu COULD NOT OPEN\n", file_name, position);
     }
-
-    /* Free up */
-    fclose(file);
-    free(match);
 }
 
 /**

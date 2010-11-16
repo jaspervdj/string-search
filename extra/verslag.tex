@@ -96,4 +96,18 @@ Aangezien $p_{size}$ en $t_{size}$ vastliggen, is $b_{size}$ de enige factor
 waarmee we de overhead kunnen be\"invloeden. Om de overhead te minimaliseren,
 moeten we $b_{size}$ zo groot mogelijk kiezen.
 
+\section{Tests}
+
+\subsection{Testen op valse positieven}
+
+Bij een exact string matching algoritme is het zeer makkelijk om te testen op
+valse positieven. Concreet is een vals positief hier wanneer ons algoritme dat
+er een match staat in file $f$ op positie $p$, en dit niet het geval is.
+
+We schreven een tool om dit te testen, de source code hiervan is te vinden in
+\verb#util/verify-matches.c#. Deze tool neemt op \verb#stdin# een aantal lijnen
+van de form \verb#file_name:position#, dus de uitvoer van \'e\'en van de
+zoekalgoritmes. Vervolgens zal het \'e\'en voor \'e\'en alle files openen,
+zoeken naar de gegeven positie, en kijken of de zoekterm hier effectief staat.
+
 \end{document}

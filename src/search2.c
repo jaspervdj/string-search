@@ -44,7 +44,6 @@ void search_create(const char *pattern, int pattern_size) {
     /* Fill in skip table */
     while(offset + 1 < pattern_size) {
         FIRST_MISMATCH(pattern, pattern_size, pattern, offset, equal, mismatch);
-        printf("Offset %d, mismatch: %d, equal: %d\n", offset, mismatch, equal);
 
         if(mismatch == 0) {
             skip_table[offset + 1] = offset + 1;   
