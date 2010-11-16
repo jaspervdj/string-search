@@ -39,7 +39,6 @@ void search_create(const char *pattern, int pattern_size) {
     /* Initialization */
     skip_table = malloc((pattern_size + 1) * sizeof(int));
     skip_table[0] = skip_table[1] = 1;
-    for(i = 2; i < pattern_size + 1; i++) skip_table[i] = i;
 
     /* Fill in skip table */
     while(offset + 1 < pattern_size) {
@@ -49,11 +48,8 @@ void search_create(const char *pattern, int pattern_size) {
             skip_table[offset + 1] = offset + 1;   
             equal = 0;
         } else {
-            for(i = 1; i <= mismatch; i++) {
-                /* Beware of the min() formula! */
-                if(skip_table[offset + i] > offset) {
-                    skip_table[offset + i] = offset;
-                }
+            for(i = equal + 1; i <= mismatch; i++) {
+                skip_table[offset + i] = offset;
             }
 
             equal = mismatch - skip_table[mismatch];
