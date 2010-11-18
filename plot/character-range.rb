@@ -18,6 +18,7 @@ benchmark range_sizes do |range_size|
     `./util/generate-text -f tmp/characters -s 1 -o tmp/query`
     `./util/generate-text -f tmp/characters -s 300 -o tmp/text`
 
-    mean = bench "bin/bench2", "tmp/query", "tmp/text"
-    [mean]
+    with_algorithms do |algorithm|
+        bench algorithm, "tmp/query", "tmp/text"
+    end
 end

@@ -37,3 +37,8 @@ def benchmark points
         end
     end
 end
+
+def with_algorithms
+    algorithms = ["bin/bench0", "bin/bench1", "bin/bench2"]
+    algorithms.map do |algorithm| yield algorithm end
+end
