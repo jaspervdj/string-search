@@ -11,6 +11,7 @@ bench0
 bench1
 bench2
 data
+tmp
 *.hi
 *.o
 

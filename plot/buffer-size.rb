@@ -9,24 +9,10 @@ def change_buffer_size buffer_size
     end
 end
 
-def main
-    buffer_size = 16
-    results_file = "results.csv"
-
-    # Clear file
-    FileUtils.rm_f results_file
-
-    20.times do
-        change_buffer_size buffer_size
-
-        `make`
-        mean = bench "bin/bench0", "data/zoekterm", "data/kjv"
-        File.open results_file, "a" do |file|
-            file.write "#{buffer_size},#{mean}\n"
-        end
-
-        buffer_size = buffer_size * 2
-    end
+buffer_sizes = (4 .. 10).map do |n| 2 ** n end
+benchmark buffer_sizes do |buffer_size|
+    change_buffer_size buffer_size
+    `make`
+    mean = bench "bin/bench0", "data/zoekterm", "data/kjv"
+    [mean]
 end
-
-main

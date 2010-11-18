@@ -21,3 +21,19 @@ def with_file file_name
         file.write(yield content)
     end
 end
+
+def benchmark points
+    results_file = "results.csv"
+    FileUtils.rm_f results_file
+    points.each do |point|
+        # Run the benchmark once
+        puts "Running benchmark for point #{point}..."
+        results = yield point
+
+        # Write as CSV
+        fields = [point] + results
+        File.open results_file, "a" do |file|
+            file.write "#{fields.join ','}\n"
+        end
+    end
+end
