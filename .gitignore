@@ -15,6 +15,9 @@ tmp
 *.hi
 *.o
 
+.RData
+.Rhistory
+
 extra/verslag.aux
 extra/verslag.log
 extra/verslag.pdf
