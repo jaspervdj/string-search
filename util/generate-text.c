@@ -8,6 +8,7 @@
 #include <limits.h>
 #include <string.h>
 #include "random-text.h"
+#include "common.h"
 
 #define BUFFER_SIZE 1024
 #define DEFAULT_CHUNKS 4
@@ -21,6 +22,7 @@ void print_usage(int argc, char **argv) {
     printf("\n");
     printf("OPTIONS\n");
     printf("-c string  Use only the characters which are in string\n");
+    printf("-f file    Use only the characters which are in file\n");
     printf("-o file    Output file (Default: stdout)\n");
     printf("-s size    Number of %d-byte text chunks (Default: %d)\n",
             BUFFER_SIZE, DEFAULT_CHUNKS);
@@ -58,6 +60,9 @@ void generate_text(char *list, int list_size,
  * Main function
  */
 int main(int argc, char **argv) {
+    /* Temporary */
+    char *tmp;
+    int tmp_size;
     /* Output file */
     FILE *out = stdout;
     /* Size in KiB */
@@ -69,20 +74,38 @@ int main(int argc, char **argv) {
     int list_size;
 
     /* Parse options */
-    while((opt_code = getopt(argc, argv, "c:ho:s:")) != -1) {
+    while((opt_code = getopt(argc, argv, "c:f:ho:s:")) != -1) {
         switch(opt_code) {
+            /* Take characters from string */
             case 'c':
+                if(list) free(list);
                 list = chars_in_string(optarg, strlen(optarg), &list_size);
                 break;
+
+            /* Take characters from file */
+            case 'f':
+                if(list) free(list);
+                tmp = read_entire_file(optarg, &tmp_size);
+                list = chars_in_string(tmp, tmp_size, &list_size);
+                free(tmp);
+                break;
+
+            /* Print help */
             case 'h':
                 print_usage(argc, argv); 
                 return 0;
+
+            /* Set output file */
             case 'o':
                 out = fopen(optarg, "w");
                 break;
+
+            /* Set text size */
             case 's':
                 size = atoi(optarg);
                 break;
+
+            /* All else */
             default:
                 return 0;
         }
