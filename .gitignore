@@ -3,6 +3,7 @@ Makefile
 *.cmake
 CMakeCache.txt
 *.swp
+results.csv
 
 search0
 search1
