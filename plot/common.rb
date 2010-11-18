@@ -1,5 +1,7 @@
 require 'tempfile'
 
+# Run a benchmark
+#
 def bench benchmark, pattern, text
     # Create a tempfile
     tmp = Tempfile.new "bench"
@@ -15,6 +17,8 @@ def bench benchmark, pattern, text
     mean.to_f
 end
 
+# Modify a file in-place
+#
 def with_file file_name
     content = File.read file_name
     File.open file_name, "w" do |file|
@@ -22,12 +26,14 @@ def with_file file_name
     end
 end
 
-def benchmark points
+# Execute a benchmark for every data point, writing the results to results.csv
+#
+def create_csv points
     results_file = "results.csv"
     FileUtils.rm_f results_file
     points.each do |point|
         # Run the benchmark once
-        puts "Running benchmark for point #{point}..."
+        puts "Running benchmark for data point #{point}..."
         results = yield point
 
         # Write as CSV
@@ -38,6 +44,8 @@ def benchmark points
     end
 end
 
+# Execute a block with all algorithms
+#
 def with_algorithms
     algorithms = ["bin/bench0", "bin/bench1", "bin/bench2"]
     algorithms.map do |algorithm| yield algorithm end

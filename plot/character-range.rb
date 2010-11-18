@@ -10,7 +10,7 @@ def character_range n
 end
 
 range_sizes = (2 .. 200)
-benchmark range_sizes do |range_size|
+create_csv range_sizes do |range_size|
     File.open "tmp/characters", "w" do |file|
         file.write(character_range range_size)
     end

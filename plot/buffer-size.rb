@@ -9,10 +9,11 @@ def change_buffer_size buffer_size
     end
 end
 
-buffer_sizes = (4 .. 10).map do |n| 2 ** n end
-benchmark buffer_sizes do |buffer_size|
+buffer_sizes = (4 .. 16).map do |n| 2 ** n end
+create_csv buffer_sizes do |buffer_size|
     change_buffer_size buffer_size
     `make`
-    mean = bench "bin/bench0", "data/zoekterm", "data/kjv"
-    [mean]
+    with_algorithms do |algorithm|
+        bench algorithm, "data/zoekterm", "data/kjv"
+    end
 end
