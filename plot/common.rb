@@ -29,16 +29,14 @@ end
 # Execute a benchmark for every data point, writing the results to results.csv
 #
 def create_csv points
-    results_file = "results.csv"
-    FileUtils.rm_f results_file
-    points.each do |point|
-        # Run the benchmark once
-        puts "Running benchmark for data point #{point}..."
-        results = yield point
+    File.open "results.csv", "w" do |file|
+        points.each do |point|
+            # Run the benchmark once
+            puts "Running benchmark for data point #{point}..."
+            results = yield point
 
-        # Write as CSV
-        fields = [point] + results
-        File.open results_file, "a" do |file|
+            # Write as CSV
+            fields = [point] + results
             file.write "#{fields.join ','}\n"
         end
     end
