@@ -196,6 +196,11 @@ van de form \verb#file_name:position#, dus de uitvoer van \'e\'en van de
 zoekalgoritmes. Vervolgens zal het \'e\'en voor \'e\'en alle files openen,
 zoeken naar de gegeven positie, en kijken of de zoekterm hier effectief staat.
 
+\section{Snelheidstesten}
+
+In deze sectie vergelijken we de snelheid van de algoritmes, toegepast op een
+aantal veel voorkomende gevallen en een aantal interessante gevallen.
+
 \section{Utilities}
 
 \subsection{Genereren van willekeurige tekst}
@@ -207,5 +212,18 @@ De source code hiervan is te vinden in \verb#util/generate-text.c#. De gebruiker
 kan meegeven welke karakters er gebruikt moeten worden in de willekeurige tekst
 (b.v. enkel alfanumeriek, of een DNA sequentie) en hoeveel tekst er gegenereerd
 moet worden.
+
+\subsection{Vergelijken van pipes}
+
+Om verschillende bestanden te vergelijken, gebruikt men klassiek het \verb#diff#
+programma. Dit werkt echter niet goed als het de bedoeling is om named pipes
+te vergelijken. Om dit op te lossen schreven we \verb#util/pipe-diff.hs#. Deze
+utility is geschreven in Haskell, omdat die programmeertaal op een eenvoudige
+manier threads en concurrent IO toelaat, wat nodig is als we de output van
+verschillende pipes tegelijk willen vergelijken.
+
+De utility neemt een aantal bestanden als argumenten, en zal al deze bestanden
+lijn voor lijn vergelijken — ze dienen allemaal hetzelfde te zijn. Het heeft de
+aangename eigenschap om ook zeer goed te werken op named pipes.
 
 \end{document}

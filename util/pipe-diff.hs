@@ -1,4 +1,4 @@
--- | Simple diff to compare two pipes
+-- | Simple diff to compare multiple pipes
 --
 module Main where
 
