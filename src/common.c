@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "common.h"
 
-#define DEFAULT_BUFFER_SIZE (16 * 4096)
+#define DEFAULT_BUFFER_SIZE 65536
 
 inline int fill_next_buffer(char *buffer, int buffer_size, int retain,
         FILE *file) {

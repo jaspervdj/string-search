@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
 #include "common.h"
+
+int pattern_hash;
 
 void search_create(const char *pattern, int pattern_size) {
 }
