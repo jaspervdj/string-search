@@ -5,12 +5,7 @@ CMakeCache.txt
 *.swp
 results.csv
 
-search0
-search1
-search2
-bench0
-bench1
-bench2
+bin
 data
 tmp
 *.hi

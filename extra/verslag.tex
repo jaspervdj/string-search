@@ -41,7 +41,11 @@ dient deze interface te implementeren. De interface bevat volgende methoden:
     bepaalde variabelen dealloceren.
 \end{itemize}
 
-Deze interface laat toe om elk gevraagd zoekalgoritme te implementeren.
+Deze interface laat toe om elk gevraagd zoekalgoritme te implementeren. We
+kunnen nu de verschillende algoritmes implementeren in \verb#src/search1.c#,
+\verb#src/search2.c# en \verb#src/search3.c#, en de algemene code in
+\verb#src/main.c#. Na compilatie kunnen we dan het gewenste algoritme linken met
+de algemene code.
 
 \subsection{Werken met buffers}
 
@@ -96,7 +100,7 @@ Aangezien $p_{size}$ en $t_{size}$ vastliggen, is $b_{size}$ de enige factor
 waarmee we de overhead kunnen be\"invloeden. Om de overhead te minimaliseren,
 moeten we $b_{size}$ zo groot mogelijk kiezen.
 
-\section{Tests}
+\section{Correctheidstesten}
 
 \subsection{Testen op valse positieven}
 
