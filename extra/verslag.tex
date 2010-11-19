@@ -12,6 +12,17 @@
 \setmainfont{Bitstream Vera Serif}
 \setmonofont{Inconsolata}
 
+\newcommand{\image}[3][1]{
+    \begin{figure}
+    \begin{center}
+    \includegraphics[width=#1\textwidth]{images/#2.pdf}
+    \caption{#3}
+    \label{fig:#2}
+    \end{center}
+    \end{figure}
+}
+
+
 \title{Project Algoritmen en Datastructuren III}
 \author{Jasper Van der Jeugt}
 \date{\today}
@@ -24,6 +35,7 @@
 \section{Structuur van de code}
 
 \subsection{Verschillende implementaties, dezelfde interface}
+\label{interface}
 
 De opgave bestaat eruit om verschillende tools te schrijven met hetzelfde nut,
 enkel het gebruikte algoritme is verschillend. Om zoveel mogelijk
@@ -43,12 +55,49 @@ dient deze interface te implementeren. De interface bevat volgende methoden:
 \end{itemize}
 
 Deze interface laat toe om elk gevraagd zoekalgoritme te implementeren. We
-kunnen nu de verschillende algoritmes implementeren in \verb#src/search1.c#,
-\verb#src/search2.c# en \verb#src/search3.c#, en de algemene code in
-\verb#src/main.c#. Na compilatie kunnen we dan het gewenste algoritme linken met
-de algemene code.
+kunnen nu deze interface drie keer implementeren, met de verschillende
+algoritmes. Dit gebeurde in \verb#src/search1.c#, \verb#src/search2.c# en
+\verb#src/search3.c#.
+
+Als we deze interface hebben, is het ook mogelijk om door middel van buffers
+(zie \ref{buffers}) een functie te schrijven die files doorzoekt. Dit gebeurd in
+\verb#src/search-files.c#.
+
+Vervolgens maakt \verb#src/main.c# gebruik van \verb#src/search-files.c# om een
+entry point te hebben. De structuur van het programma is dus een soort gelaagde
+architectuur zoals ge\"illustreerd in Figuur \ref{fig:layers-main}.
+
+Alle C files (behalve de concrete implementaties) worden dus eens gecompiled met
+\verb#src/search1.c#, \verb#src/search2.c# en \verb#search3.c# — zo krijgen we
+dus 3 uitvoerbare programma's.
+
+\image[0.6]{layers-main}{Gelaagde architectuur van ons programma}
+
+\subsection{Benchmarking}
+
+Door gebruik te maken van een interface zoals beschreven in \ref{interface},
+hebben we ook een manier om makkelijk benchmarks te schrijven. We kunnen opnieuw
+gebruik maken van \verb#src/search-files.c#, we moeten enkel de bovenste laag
+vervangen. De architectuur van de benchmarks is ge\"illustreerd in Figuur
+\ref{fig:layers-bench}.
+
+\image[0.6]{layers-bench}{Gelaagde architectuur van de benchmarks}
+
+Een benchmark zal ook de bestanden die meegegeven zijn op de commandolijn
+gebruiken om een string search uit te voeren, met het verschil dat dit meerdere
+keren zal uitgevoerd worden, zodat er betrouwbare metingen kunnen gebeuren.
+Vervolgens doet het enige postprocessing van de data, zoals bepalen van het
+gemiddelde, de standaardafwijking en de uitschieters.
+
+\subsection{Brute force}
+
+We implementeerden ook een eenvoudig brute-force algoritme in het bestand
+\verb#src/search0.c#. Dit was niet noodzakelijk maar het interessant om dit te
+vergelijken met de andere algoritmes, en het kan ook gebruikt worden in
+correctheidstesten.
 
 \subsection{Werken met buffers}
+\label{buffers}
 
 Omdat \'e\'en van de vereisten is dat het doorzoeken van grote files mogelijk
 is, gebruiken we buffers. In deze subsectie argumenteren we aan dat we een
