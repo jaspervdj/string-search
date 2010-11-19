@@ -8,13 +8,6 @@
 
 int *skip_table;
 
-/* Macro to get the first mismatch. The result is stored in the i variable. */
-#define FIRST_MISMATCH(pattern, pattern_size, buffer, buffer_offset,           \
-        assume_equal, i) {                                                     \
-    i = assume_equal;                                                          \
-    while(i < pattern_size && pattern[i] == buffer[buffer_offset + i]) i++;    \
-}
-
 /* Used for debugging purposes. */
 void print_skip_table(const char *pattern, int pattern_size) {
     int i;
@@ -41,7 +34,10 @@ void search_create(const char *pattern, int pattern_size) {
 
     /* Fill in skip table */
     while(offset + 1 < pattern_size) {
-        FIRST_MISMATCH(pattern, pattern_size, pattern, offset, equal, mismatch);
+        /* Determine first mismatch */
+        mismatch = equal;
+        while(mismatch < pattern_size &&
+                pattern[mismatch] == pattern[offset + mismatch]) mismatch++;
 
         if(mismatch == 0) {
             skip_table[offset + 1] = offset + 1;   
@@ -69,20 +65,25 @@ void search_create(const char *pattern, int pattern_size) {
 void search_buffer(const char *pattern, int pattern_size,
         const char *file_name, char *buffer, int buffer_size,
         ullong buffer_offset) {
-    int i = 0;
     int equal = 0;
     int mismatch;
 
-    while(i + pattern_size - 1 < buffer_size) {
-        FIRST_MISMATCH(pattern, pattern_size, buffer, i, equal, mismatch);
+    const char *buffer_end = buffer + buffer_size - pattern_size + 1;
+    const char *buffer_start = buffer;
+
+    while(buffer < buffer_end) {
+        /* Determine first mismatch */
+        mismatch = equal;
+        while(mismatch < pattern_size &&
+                pattern[mismatch] == buffer[mismatch]) mismatch++;
 
         /* Match found */
         if(mismatch >= pattern_size) {
-            print_match(file_name, buffer_offset + i);
-            i++;
+            print_match(file_name, buffer_offset + (buffer - buffer_start));
+            buffer++;
             equal = 0;
         } else {
-            i += skip_table[mismatch];
+            buffer += skip_table[mismatch];
             equal = mismatch == 0 ? 0 : mismatch - skip_table[mismatch];
         }
     }
