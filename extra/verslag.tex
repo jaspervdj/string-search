@@ -10,6 +10,7 @@
 \setlength{\parskip}{1em}
 
 \setmainfont{Bitstream Vera Serif}
+\setmonofont{Inconsolata}
 
 \title{Project Algoritmen en Datastructuren III}
 \author{Jasper Van der Jeugt}
@@ -99,6 +100,38 @@ geeft ons dat de maximale overhead gegeven wordt door:
 Aangezien $p_{size}$ en $t_{size}$ vastliggen, is $b_{size}$ de enige factor
 waarmee we de overhead kunnen be\"invloeden. Om de overhead te minimaliseren,
 moeten we $b_{size}$ zo groot mogelijk kiezen.
+
+\section{Algemene optimalisaties}
+
+\subsection{Dereferencing versnellen}
+
+In alle algoritmes lopen we door de buffer om de string te zoeken. De klassieke
+manier om dit te doen wordt in C geschreven als:
+
+\begin{verbatim}
+int i;
+for(i = 0; i < buffer_size; i++) {
+    /* Doe iets met buffer[i]... */
+}
+\end{verbatim}
+
+In de meeste gevallen wordt \verb#buffer[i]# zeer intensief gebruikt in de body
+van de lus. We kunnen dit echter ook schrijven als:
+
+\begin{verbatim}
+const char *buffer_end = buffer + buffer_size;
+while(buffer < buffer_end) {
+    /* Doe iets met *buffer... */
+    buffer++;
+}
+\end{verbatim}
+
+De waarde van \verb#*buffer# bepalen gaat sneller dan de waarde van
+\verb#buffer[i]# bepalen, omdat er geen optelling nodig is. Aangezien deze
+optelling meerdere keren zou gebeuren in de body van de lus, en de lus een groot
+aantal keer uitgevoerd wordt, is dit een optimalisatie die de moeite loont: alle
+ge\"implementeerde algoritmen werden ongeveer 10\% sneller voor voldoende grote
+bestanden.
 
 \section{Correctheidstesten}
 
