@@ -100,10 +100,13 @@ correctheidstesten.
 \label{buffers}
 
 Omdat \'e\'en van de vereisten is dat het doorzoeken van grote files mogelijk
-is, gebruiken we buffers. In deze subsectie argumenteren we aan dat we een
-willekeurig exact string matching algoritme dat werkt op een simpele array
-gemakkelijk kunnen uitbreiden tot een algoritme dat op grote files werkt via
-buffers.
+is, gebruiken we buffers.
+
+Buffers zijn nodig omdat we nooit het volledige te doorzoeken bestand in \'e\'en
+keer in het werkgeheugen kunnen laden als dit groot is. We lezen het dus in per
+buffer. In deze subsectie argumenteren we dat we een willekeurig exact string
+matching algoritme dat werkt op een simpele array gemakkelijk kunnen uitbreiden
+tot een algoritme dat op grote files werkt via buffers.
 
 Onze strategie verloopt als volgt:
 
@@ -138,8 +141,9 @@ doorzoeken tekst (met lengte $t_{size}$) en $a$ het gebruikte algoritme.
 \end{itemize}
 
 Er is dus telkens een zeker overlap van $p_{size} - 1$ tekens, die (afhankelijk
-van het algoritme) eventueel 2 keer doorzocht wordt. Een slechtste geval analyse 
-geeft ons dat de maximale overhead gegeven wordt door:
+van het algoritme) eventueel 2 keer doorzocht wordt, en zeker \'e\'enmaal
+gekopi\"eerd. Een slechtste geval analyse geeft ons dat de maximale overhead
+gegeven wordt door:
 
 \begin{equation*}
 \left( \lceil \frac{t_{size}}{b_{size}} \rceil - 1 \right)
@@ -148,7 +152,7 @@ geeft ons dat de maximale overhead gegeven wordt door:
 
 Aangezien $p_{size}$ en $t_{size}$ vastliggen, is $b_{size}$ de enige factor
 waarmee we de overhead kunnen be\"invloeden. Om de overhead te minimaliseren,
-moeten we $b_{size}$ zo groot mogelijk kiezen.
+moeten we $b_{size}$ dus zo groot mogelijk kiezen.
 
 \section{Algemene optimalisaties}
 
@@ -195,6 +199,17 @@ We schreven een tool om dit te testen, de source code hiervan is te vinden in
 van de form \verb#file_name:position#, dus de uitvoer van \'e\'en van de
 zoekalgoritmes. Vervolgens zal het \'e\'en voor \'e\'en alle files openen,
 zoeken naar de gegeven positie, en kijken of de zoekterm hier effectief staat.
+
+\subsection{Parallel testen van verschillende algoritmes}
+
+Alle verschillende algoritmes die we ge\"implementeerd hebben dienen exact
+hetzelfde resultaat te geven voor dezelfde input. We kunnen dus een soort
+algemene test implementeren die alle algoritmes probeert op \'e\'en inputset, en
+vervolgens de uitkomsten vergelijkt.
+
+Bovendien kunnen we gebruik maken van named pipes om een oneindig grote tekst te
+genereren. Dit controleert dan bovendien ook of de buffering goed werkt — want
+een oneindig groot bestand kan nooit in het werkgeheugen passen.
 
 \section{Snelheidstesten}
 
