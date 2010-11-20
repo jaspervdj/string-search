@@ -216,6 +216,15 @@ multicore processors.
 Hiertoe gebruiken we de utilities \verb#pipe-diff# (zie \ref{pipe-diff}) en
 \verb#generate-text-and-matches# (zie \ref{generate-text-and-matches}).
 
+We genereren voor een bepaald zoekpatroon een stroom van tekst, en laten
+alle zoekalgoritmes erop los. Voor $x$ zoekalgoritmen krijgen we dus $x$
+outputstromen met posities, en van \verb#generate-text-and-matches# krijgen we
+nog 1 outputstroom met de verwachte posities. Vervolgens vergelijken we al deze
+stromen met de \verb#pipe-diff# utility.
+
+Het eenvoudige ruby-scriptje dat al deze stromen aanmaakt en opstart kan worden
+teruggevonden in \verb#util/parallel-test.rb#.
+
 \section{Snelheidstesten}
 
 In deze sectie vergelijken we de snelheid van de algoritmes, toegepast op een
