@@ -207,9 +207,14 @@ hetzelfde resultaat te geven voor dezelfde input. We kunnen dus een soort
 algemene test implementeren die alle algoritmes probeert op \'e\'en inputset, en
 vervolgens de uitkomsten vergelijkt.
 
-Bovendien kunnen we gebruik maken van named pipes om een oneindig grote tekst te
-genereren. Dit controleert dan bovendien ook of de buffering goed werkt — want
-een oneindig groot bestand kan nooit in het werkgeheugen passen.
+Bovendien kunnen we gebruik maken van named pipes om een oneindig grote tekst
+te genereren. Dit controleert dan ook of de buffering goed werkt — want een
+oneindig groot bestand kan nooit in het werkgeheugen passen. Ook kunnen de
+verschillende algoritmes parallel draaien, wat een voordeel is op moderne
+multicore processors.
+
+Hiertoe gebruiken we de utilities \verb#pipe-diff# (zie \ref{pipe-diff}) en
+\verb#generate-text-and-matches# (zie \ref{generate-text-and-matches}).
 
 \section{Snelheidstesten}
 
@@ -228,7 +233,13 @@ kan meegeven welke karakters er gebruikt moeten worden in de willekeurige tekst
 (b.v. enkel alfanumeriek, of een DNA sequentie) en hoeveel tekst er gegenereerd
 moet worden.
 
+\label{generate-text-and-matches}
+Een variant bevindt zich in \verb#util/generate-text-and-matches.c#. Deze zal
+naast een willekeurige tekst ook nog de verwachte matches (dus de posities
+waarop een match moet voorkomen) genereren.
+
 \subsection{Vergelijken van pipes}
+\label{pipe-diff}
 
 Om verschillende bestanden te vergelijken, gebruikt men klassiek het \verb#diff#
 programma. Dit werkt echter niet goed als het de bedoeling is om named pipes
