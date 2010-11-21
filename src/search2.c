@@ -18,7 +18,7 @@ void print_skip_table(const char *pattern, int pattern_size) {
     printf("\n");
 
     /* Print the actual numbers */
-    for(i = 0; i < pattern_size; i++) printf("%3d", skip_table[i]);
+    for(i = 0; i <= pattern_size; i++) printf("%3d", skip_table[i]);
     printf("\n");
 }
 
@@ -53,6 +53,9 @@ void search_create(const char *pattern, int pattern_size) {
         offset += skip_table[mismatch];
     }
 
+    /* Optimization */
+    skip_table[pattern_size] = skip_table[pattern_size - 1];
+
     /* Debugging */
 #   ifdef DEBUG
     print_skip_table(pattern, pattern_size);
@@ -65,27 +68,23 @@ void search_create(const char *pattern, int pattern_size) {
 void search_buffer(const char *pattern, int pattern_size,
         const char *file_name, char *buffer, int buffer_size,
         ullong buffer_offset) {
-    int equal = 0;
-    int mismatch;
+    int mismatch = 0;
 
     const char *buffer_end = buffer + buffer_size - pattern_size + 1;
     const char *buffer_start = buffer;
 
     while(buffer < buffer_end) {
         /* Determine first mismatch */
-        mismatch = equal;
         while(mismatch < pattern_size &&
                 pattern[mismatch] == buffer[mismatch]) mismatch++;
 
         /* Match found */
         if(mismatch >= pattern_size) {
             print_match(file_name, buffer_offset + (buffer - buffer_start));
-            buffer++;
-            equal = 0;
-        } else {
-            buffer += skip_table[mismatch];
-            equal = mismatch == 0 ? 0 : mismatch - skip_table[mismatch];
         }
+
+        buffer += skip_table[mismatch];
+        if(mismatch > 0) mismatch -= skip_table[mismatch];
     }
 }
 
