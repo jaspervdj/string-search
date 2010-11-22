@@ -13,6 +13,8 @@ add_executable(bin/search2 src/search2.c src/search-files.c src/common.c
         src/main.c)
 add_executable(bin/search3 src/search3.c src/search-files.c src/common.c
         src/main.c)
+add_executable(bin/search4 src/search4.c src/search-files.c src/common.c
+        src/main.c)
 
 add_executable(bin/bench0 src/search0.c src/search-files.c src/common.c
         src/bench.c)
@@ -21,6 +23,8 @@ add_executable(bin/bench1 src/search1.c src/search-files.c src/common.c
 add_executable(bin/bench2 src/search2.c src/search-files.c src/common.c
         src/bench.c)
 add_executable(bin/bench3 src/search3.c src/search-files.c src/common.c
+        src/bench.c)
+add_executable(bin/bench4 src/search4.c src/search-files.c src/common.c
         src/bench.c)
 
 add_executable(util/generate-text util/generate-text.c util/random-text.c
