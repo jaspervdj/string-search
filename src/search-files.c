@@ -50,6 +50,13 @@ int search_files(char *pattern_file_name, char **file_names,
     /* Inspect the pattern. */
     pattern = read_entire_file(pattern_file_name, &pattern_size);
 
+    /* Throw an error if the pattern is empty */
+    if(pattern_size <= 0) {
+        printf("%s: Incorrect pattern of size %d\n",
+                pattern_file_name, pattern_size);
+        return 1;
+    }
+
 #   ifdef DEBUG
     printf("Searching for: %s\n", pattern);
 #   endif
