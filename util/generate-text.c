@@ -23,6 +23,7 @@ void print_usage(int argc, char **argv) {
     printf("-c string  Use only the characters which are in string\n");
     printf("-f file    Use only the characters which are in file\n");
     printf("-o file    Output file (Default: stdout)\n");
+    printf("-r seed    Use given random seed\n");
     printf("-s size    Number of bytes (Default: %d)\n", DEFAULT_SIZE);
 }
 
@@ -32,9 +33,6 @@ void print_usage(int argc, char **argv) {
 void generate_text(char *list, int list_size,
         unsigned long long size, FILE *out) {
     unsigned long long i;
-
-    /* Initialize random seed */
-    srand(time(0));
 
     /* Loop using the size */
     for(i = 0; i < size; i++) {
@@ -62,8 +60,11 @@ int main(int argc, char **argv) {
     char *list = 0;
     int list_size;
 
+    /* Initialize random seed */
+    srand(time(0));
+
     /* Parse options */
-    while((opt_code = getopt(argc, argv, "c:f:ho:s:")) != -1) {
+    while((opt_code = getopt(argc, argv, "c:f:ho:r:s:")) != -1) {
         switch(opt_code) {
             /* Take characters from string */
             case 'c':
@@ -87,6 +88,11 @@ int main(int argc, char **argv) {
             /* Set output file */
             case 'o':
                 out = fopen(optarg, "w");
+                break;
+
+            /* Set random seed */
+            case 'r':
+                srand(atoi(optarg));
                 break;
 
             /* Set text size */
