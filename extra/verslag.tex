@@ -154,6 +154,46 @@ Aangezien $p_{size}$ en $t_{size}$ vastliggen, is $b_{size}$ de enige factor
 waarmee we de overhead kunnen be\"invloeden. Om de overhead te minimaliseren,
 moeten we $b_{size}$ dus zo groot mogelijk kiezen.
 
+\section{Shift-and}
+
+TODO
+
+\section{Knuth-Morris-Prath}
+
+\subsection{Uitbreiden van verschuivingstabel}
+
+Een belangrijke vraag is wat we doen als we een match vinden. Een na\"ieve
+implementatie zou kunnen zijn: de huidige positie met \'e\'en verhogen, en het
+aantal gelijke tekens terug gelijk te stellen aan 0.
+
+Stel echter dat er op elke positie van tekst een match voorkomt. Dan is het
+eenvoudig om te zien dat de tijdscomplexiteit algoritme nu een bovengrens heeft
+van $O(m \cdot n)$. Dit willen we niet, aangezien het voordeel van KMP net is
+dat het altijd in $O(m + n)$ tijd kan.
+
+Onze oplossing bestaat eruit om onze verschuivingstabel \'e\'en element groter
+te maken. De betekenis van dit laatste element is analoog met de betekenis van
+de laatste elementen: het duidt op het aantal karakters dat men mag overslaan
+als de eerste mismatch op deze positie voorkomt — dus, als de volledige string
+matcht (aangezien we nooit verder zullen vergelijken dan de stringlengte).
+
+Bij het “barbados” voorbeeld wordt dit:
+
+\begin{center}
+\begin{tabular}{lllllllll}
+b & a & r & b & a & d & o & s &   \\
+1 & 1 & 2 & 3 & 3 & 3 & 6 & 7 & 8 \\
+\end{tabular}
+\end{center}
+
+Het instellen van dit element verloopt volledig analoog met de vorige elementen,
+we laten dus gewoon de lus waarin we de verschuivingstabel opstellen \'e\'en
+element verder lopen.
+
+\section{Rabin-Karp}
+
+TODO
+
 \section{Algemene optimalisaties}
 
 \subsection{Dereferencing versnellen}
