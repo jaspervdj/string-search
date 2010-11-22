@@ -223,7 +223,20 @@ nog 1 outputstroom met de verwachte posities. Vervolgens vergelijken we al deze
 stromen met de \verb#pipe-diff# utility.
 
 Het eenvoudige ruby-scriptje dat al deze stromen aanmaakt en opstart kan worden
-teruggevonden in \verb#util/parallel-test.rb#.
+teruggevonden in \verb#util/parallel-test.rb#. In principe kan deze test eeuwig
+draaien, het geheugengebruik blijft constant — we kunnen dit dus enkele
+nachten laten draaien, zo zijn we er vrij zeker van dat onze algoritmes werken.
+
+\subsection{Eenvoudigweg vergelijken}
+
+We kunnen ook een eenvoudigere test schrijven, \'e\'en die simpelweg twee
+algoritmes sequentieel start, en de resultaten vergelijkt met een klassieke
+\verb#diff#. Dit is ge\"implementeerd in het eenvoudige ruby-scriptje
+\verb#util/comparing-test.rb#. Het gebruikt de \verb#generate-text# (zie
+\ref{generate-text}) om willekeurige zoekpatronen en teksten aan te maken.
+
+Welke twee algoritmes vergeleken moeten worden, kan de gebruiker meegeven op de
+commandolijn.
 
 \section{Snelheidstesten}
 
@@ -233,6 +246,7 @@ aantal veel voorkomende gevallen en een aantal interessante gevallen.
 \section{Utilities}
 
 \subsection{Genereren van willekeurige tekst}
+\label{generate-text}
 
 We schreven een utility om willekeurige tekst te genereren. Dit is handig bij
 het testen van de verschillende algoritmes.
