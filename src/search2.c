@@ -33,7 +33,7 @@ void search_create(const char *pattern, int pattern_size) {
     skip_table[0] = skip_table[1] = 1;
 
     /* Fill in skip table */
-    while(offset + 1 < pattern_size) {
+    while(offset < pattern_size) {
         /* Determine first mismatch */
         mismatch = equal;
         while(mismatch < pattern_size &&
@@ -52,9 +52,6 @@ void search_create(const char *pattern, int pattern_size) {
 
         offset += skip_table[mismatch];
     }
-
-    /* Optimization */
-    skip_table[pattern_size] = skip_table[pattern_size - 1];
 
     /* Debugging */
 #   ifdef DEBUG
