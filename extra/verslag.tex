@@ -226,6 +226,40 @@ aantal keer uitgevoerd wordt, is dit een optimalisatie die de moeite loont: alle
 ge\"implementeerde algoritmen werden ongeveer 10\% sneller voor voldoende grote
 bestanden.
 
+\subsection{Gebruik van globale variabelen}
+
+De abstracte interface in \verb#src/search.h# voorziet de volgende methoden:
+
+\begin{itemize}
+    \item \verb#search_create#
+    \item \verb#search_buffer#
+    \item \verb#search_free#
+\end{itemize}
+
+Als we bijvoorbeeld KMP implementeren, zullen we in de \verb#search_create#
+methode onze verschuivingstabel opstellen. We hebben deze verschuivingstabel
+echter nodig in \verb#search_buffer# — hoe geven we deze variabelen door?
+
+Onze eerste oplossing bestond eruit om een \verb#struct search_state# te
+declareren in \verb#src/search.h#, en de verschillende algoritmes konden
+deze state dan implementeren zoals gewenst (b.v. een verschuivingstabel,
+of een bitvector erin opslaan). Deze \verb#struct# werkt dan aangemaakt in
+\verb#search_create#, en doorgegeven aan de andere twee functies.
+
+Een andere, en — vanuit een software-engineering standpunt — lelijkere methode
+bestaat eruit om al deze state op te slaan in globale variabelen. Maar, op die
+manier werd de code wel ongeveer 8\% sneller, doordat we b.v.
+\verb#skip_table[i]# konden gebruiken in plaats van \verb#state->skip_table[i]#.
+
+Het grote probleem met globale variabelen hier is dat ons algoritme volledig zou
+crashen indien we het later in een multithreaded programma zouden gebruiken.
+Stel bijvoorbeeld dat we de globale variabelen vanuit \'e\'en thread zouden
+overschrijven tijdens dat een andere thread ze nog gebruikt.
+
+Onze uiteindelijke algoritmes nemen de gulden middelweg: we gebruiken wel een
+\verb#struct search_state# die we doorgeven, maar we maken telkens in de
+methoden ook een referentie aan naar de velden hiervan.
+
 \section{Correctheidstesten}
 
 \subsection{Testen op valse positieven}
