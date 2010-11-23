@@ -4,42 +4,64 @@
 #include "common.h"
 
 struct search_state {
-    int *skip_table;
+    int pattern_hash;
+    int most_significant_factor;
 };
 
-struct search_state *search_create(const char *pattern, int pattern_size) {
+int hash_code(const char *string, int string_size) {
+    int hash = 0;
     int i;
-    struct search_state *state = malloc(sizeof(struct search_state));
-    state->skip_table = malloc(0x100 * sizeof(int));
 
-    for(i = 0; i < 0x100; i++) state->skip_table[i] = pattern_size;
-    for(i = 0; i < pattern_size - 1; i++) {
-        state->skip_table[(unsigned char) pattern[i]] = pattern_size - i - 1;
+    for(i = 0; i < string_size; i++) {
+        hash = hash * 2 + ((unsigned char) string[i]);
     }
 
+    return hash;
+}
+
+struct search_state *search_create(const char *pattern, int pattern_size) {
+    struct search_state *state = malloc(sizeof(struct search_state));
+    state->pattern_hash = hash_code(pattern, pattern_size);
+    state->most_significant_factor = 2 << (pattern_size - 2);
     return state;
 }
 
+/**
+ * Search a given pattern in a given buffer.
+ */
 void search_buffer(struct search_state *state, const char *pattern,
         int pattern_size, const char *file_name, char *buffer,
         int buffer_size, ullong buffer_offset) {
-    const char *buffer_start = buffer + pattern_size - 1;
-    const char *buffer_end = buffer + buffer_size;
-    char pattern_last = pattern[pattern_size - 1];
-    int *skip_table = state->skip_table;
+    const char *buffer_start = buffer;
+    /* Where to stop matching */
+    const char *buffer_end = buffer + buffer_size - pattern_size;
+    int buffer_hash = hash_code(buffer, pattern_size);
+    int pattern_hash = state->pattern_hash;
+    int most_significant_factor = state->most_significant_factor;
 
-    buffer = (char *) buffer_start;
+    /* Loop through the buffer... */
     while(buffer < buffer_end) {
-        if(*buffer == pattern_last &&
-                !strncmp(buffer - pattern_size + 1, pattern, pattern_size)) {
+        /* Compare hashes, and strings if necessary */
+        if(buffer_hash == pattern_hash &&
+                !strncmp(buffer, pattern, pattern_size)) {
             print_match(file_name, buffer_offset + (buffer - buffer_start));
         }
 
-        buffer += skip_table[(unsigned char) *buffer];
+        /* Update hash */
+        buffer_hash = ((buffer_hash -
+                ((unsigned char) *buffer) * most_significant_factor) << 1) +
+                (unsigned char) *(buffer + pattern_size);
+
+        buffer++;
+    }
+
+    /* Comparison for the last position */
+    if(buffer_hash == pattern_hash &&
+            !strncmp(buffer, pattern, pattern_size)) {
+        print_match(file_name, buffer_offset + (buffer - buffer_start));
     }
 }
 
 void search_free(struct search_state *state) {
-    free(state->skip_table);
     free(state);
 }
