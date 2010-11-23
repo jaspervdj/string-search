@@ -34,7 +34,8 @@ struct search_state *search_create(const char *pattern, int pattern_size) {
 
     /* Set the correct patterns bits to 0. */
     for(i = 0; i < pattern_size; i++) {
-        bit_vector_set_zero(state->character_columns[pattern[i]], i);
+        bit_vector_set_zero(
+                state->character_columns[(unsigned char) pattern[i]], i);
     }
 
     return state;

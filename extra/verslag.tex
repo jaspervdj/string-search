@@ -156,7 +156,30 @@ moeten we $b_{size}$ dus zo groot mogelijk kiezen.
 
 \section{Shift-and}
 
-TODO
+Stel $b$ gelijk aan het aantal bits in een \verb#unsigned long long#.
+
+Een belangrijke vraag bij het shift-and algoritme is welke strategie we
+gebruiken indien het $p_{size} > b$. We bestuderen twee mogenlijkheden:
+
+\begin{itemize}
+    \item We gebruiken gewoon een \verb#unsigned long long#, en kijken initieel
+    enkel naar de eerste $b$ bytes van $p$. Indien deze matchen gebruiken we een
+    brute-force algoritme om de laatste $p_{size} - b$ bytes te matchen.
+    \item We gebruiken een abstracte \verb$bit_vector$ structuur. Dit is
+    ge\"implementeerd in \verb#src/bit-vector.c#. Deze kan zoekpatronen van
+    arbitraire lengte aan, weliswaar met een zekere overhead.
+\end{itemize}
+
+We onderzoeken de overhead. Wanneer we een kort zoekpatroon gebruiken, is er
+duidelijk een zeer grote overhead (zie Figuur \ref{fig:plot-bit-vector}).
+We kiezen er dus voor om brute force te gebruiken in de implementatie.
+De bitvector-gebaseerde implementatie is terug te vinden in
+\verb#src/search1-bit-vector.c# als referentie.
+
+\image{plot-bit-vector}{We vergelijken het gebruik van een bitvector structuur
+(blauw) bij shift-and met het gebruik van brute force(rood). We laten de
+tekstgrootte vari\"eren voor een vaste zoekpatroongrootte (20 bytes). Het is
+duidelijk dat de overhead bij een bitvector zeer groot is.}
 
 \section{Knuth-Morris-Prath}
 

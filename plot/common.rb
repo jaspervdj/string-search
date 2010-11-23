@@ -45,6 +45,7 @@ end
 # Execute a block with all algorithms
 #
 def with_algorithms
-    algorithms = ["bin/bench0", "bin/bench1", "bin/bench2", "bin/bench3"]
+    # algorithms = ["bin/bench0", "bin/bench1", "bin/bench2", "bin/bench3"]
+    algorithms = ["bin/bench1", "bin/bench1-bit-vector"]
     algorithms.map do |algorithm| yield algorithm end
 end

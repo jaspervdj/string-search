@@ -15,11 +15,11 @@ end
 text_file_size = 20
 worst_case "tmp/text", text_file_size
 
-query_file_sizes = (1 .. text_file_size)
-create_csv query_file_sizes do |query_file_size|
-    worst_case "tmp/query", query_file_size
+pattern_file_sizes = (1 .. text_file_size)
+create_csv pattern_file_sizes do |pattern_file_size|
+    worst_case "tmp/pattern", pattern_file_size
 
     with_algorithms do |algorithm|
-        bench algorithm, "tmp/query", "tmp/text"
+        bench algorithm, "tmp/pattern", "tmp/text"
     end
 end

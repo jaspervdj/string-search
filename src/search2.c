@@ -59,7 +59,7 @@ struct search_state *search_create(const char *pattern, int pattern_size) {
 
     /* Debugging */
 #   ifdef DEBUG
-    print_skip_table(pattern, pattern_size);
+    print_skip_table(state, pattern, pattern_size);
 #   endif
 
     return state;

@@ -15,10 +15,10 @@ create_csv range_sizes do |range_size|
         file.write(character_range range_size)
     end
 
-    `./util/generate-text -f tmp/characters -s 1000 -o tmp/query`
+    `./util/generate-text -f tmp/characters -s 1000 -o tmp/pattern`
     `./util/generate-text -f tmp/characters -s 300000 -o tmp/text`
 
     with_algorithms do |algorithm|
-        bench algorithm, "tmp/query", "tmp/text"
+        bench algorithm, "tmp/pattern", "tmp/text"
     end
 end
