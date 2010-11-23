@@ -9,6 +9,8 @@ add_executable(bin/search0 src/search0.c src/search-files.c src/common.c
         src/main.c)
 add_executable(bin/search1 src/search1.c src/search-files.c src/common.c
         src/main.c)
+add_executable(bin/search1-bit-vector src/search1-bit-vector.c src/bit-vector.c
+        src/search-files.c src/common.c src/main.c)
 add_executable(bin/search2 src/search2.c src/search-files.c src/common.c
         src/main.c)
 add_executable(bin/search3 src/search3.c src/search-files.c src/common.c
@@ -20,6 +22,8 @@ add_executable(bin/bench0 src/search0.c src/search-files.c src/common.c
         src/bench.c)
 add_executable(bin/bench1 src/search1.c src/search-files.c src/common.c
         src/bench.c)
+add_executable(bin/bench1-bit-vector src/search1-bit-vector.c src/bit-vector.c
+        src/search-files.c src/common.c src/bench.c)
 add_executable(bin/bench2 src/search2.c src/search-files.c src/common.c
         src/bench.c)
 add_executable(bin/bench3 src/search3.c src/search-files.c src/common.c
