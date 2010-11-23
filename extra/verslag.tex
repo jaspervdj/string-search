@@ -154,6 +154,15 @@ Aangezien $p_{size}$ en $t_{size}$ vastliggen, is $b_{size}$ de enige factor
 waarmee we de overhead kunnen be\"invloeden. Om de overhead te minimaliseren,
 moeten we $b_{size}$ dus zo groot mogelijk kiezen.
 
+Wat is nu concreet een goede buffergrootte? Als we voor een vast patroon (20
+bytes, random) in een vaste tekst (200 bytes, random) zoeken, zien we dat de
+uitvoeringstijd inderdaad omgekeerd evenredig is met de buffergrootte (zie
+Figuur \ref{fig:plot-buffer-size}). We kiezen daarom $b_{size} = 65536$, omdat
+grotere buffer sizes niet veel verschil meer zullen maken.
+
+\image{plot-buffer-size}{We zien dat de uitvoeringstijd omgekeerd evenredig is
+met de buffergrootte}
+
 \section{Shift-and}
 
 Stel $b$ gelijk aan het aantal bits in een \verb#unsigned long long#.
