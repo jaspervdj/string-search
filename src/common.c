@@ -29,12 +29,11 @@ inline char *read_entire_file(const char *file_name, int *buffer_size) {
     FILE *file = fopen(file_name, "r");
     char *buffer;
 
-#   ifdef DEBUG
+    /* Error opening file */
     if(!file) {
-        printf("Could not open %s\n", file_name);
+        printf("Could not open: %s\n", file_name);
         return 0;
     }
-#   endif
 
     /* Determine the size of the file */
     fseek(file, 0, SEEK_END);

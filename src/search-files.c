@@ -17,12 +17,11 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
 
     buffer = create_buffer(pattern_size, &buffer_size);
 
-#   ifdef DEBUG
+    /* Check that the file is open */
     if(!file) {
-        printf("Could not open file.\n");
+        printf("Could not open: %s\n", file_name);
         return;
     }
-#   endif
 
     state = search_create(pattern, pattern_size);
 
@@ -47,13 +46,13 @@ int search_files(char *pattern_file_name, char **file_names,
         int file_names_size) {
     int i;
     char *pattern;
-    int pattern_size;
+    int pattern_size = 0;
 
     /* Inspect the pattern. */
     pattern = read_entire_file(pattern_file_name, &pattern_size);
 
     /* Throw an error if the pattern is empty */
-    if(pattern_size <= 0) {
+    if(!pattern || pattern_size <= 0) {
         printf("%s: Incorrect pattern of size %d\n",
                 pattern_file_name, pattern_size);
         return 1;
