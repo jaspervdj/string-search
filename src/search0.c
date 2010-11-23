@@ -3,16 +3,19 @@
 #include <string.h>
 #include "common.h"
 
-int pattern_hash;
+/* No state for brute-force */
+struct search_state {
+};
 
-void search_create(const char *pattern, int pattern_size) {
+struct search_state *search_create(const char *pattern, int pattern_size) {
+    return 0;
 }
 
 /**
  * Search a given pattern in a given buffer.
  */
-void search_buffer(const char *pattern, int pattern_size,
-        const char *file_name, char *buffer, int buffer_size,
+void search_buffer(struct search_state *state, const char *pattern,
+        int pattern_size, const char *file_name, char *buffer, int buffer_size,
         ullong buffer_offset) {
     int i, j;
 
@@ -26,5 +29,5 @@ void search_buffer(const char *pattern, int pattern_size,
     }
 }
 
-void search_free() {
+void search_free(struct search_state *state) {
 }

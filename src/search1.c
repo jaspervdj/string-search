@@ -7,34 +7,38 @@
 #include <limits.h>
 #include "common.h"
 
-ullong *character_columns;
-ullong match_column;
+struct search_state {
+    ullong *character_columns;
+    ullong match_column;
+};
 
-void search_create(const char *pattern, int pattern_size) {
+struct search_state *search_create(const char *pattern, int pattern_size) {
     int i;
+    struct search_state *state = malloc(sizeof(struct search_state));
 
     /* Allocate room for the character columns. Set all bits to 1. */
-    character_columns = malloc(0x100 * sizeof(ullong));
-    memset(character_columns, 0xff, 0x100 * sizeof(ullong));
+    state->character_columns = malloc(0x100 * sizeof(ullong));
+    memset(state->character_columns, 0xff, 0x100 * sizeof(ullong));
 
     /* Set the correct patterns bits to 0. */
     for(i = 0; i < MIN(pattern_size, ULLONG_BITS); i++) {
-        character_columns[pattern[i]] &= ~ULLONG_BIT_AT(i);        
+        state->character_columns[pattern[i]] &= ~ULLONG_BIT_AT(i);        
     }
 
     /* This column is a mask for a match. */
-    match_column = ULLONG_BIT_AT(MIN(pattern_size, ULLONG_BITS) - 1);
+    state->match_column = ULLONG_BIT_AT(MIN(pattern_size, ULLONG_BITS) - 1);
+
+    return state;
 }
 
-/**
- * Search a given pattern in a given buffer.
- */
-void search_buffer(const char *pattern,
+void search_buffer(struct search_state *state, const char *pattern,
         int pattern_size, const char *file_name, char *buffer,
         int buffer_size, ullong buffer_offset) {
     ullong column;    
     const char *buffer_start = buffer;
     const char *buffer_end = buffer + buffer_size;
+    ullong *character_columns = state->character_columns;
+    ullong match_column = state->match_column;
 
     /* We want a buffer, really */
     if(buffer_size <= 0 || pattern_size <= 0) return;
@@ -61,6 +65,7 @@ void search_buffer(const char *pattern,
     }
 }
 
-void search_free() {
-    free(character_columns);
+void search_free(struct search_state *state) {
+    free(state->character_columns);
+    free(state);
 }

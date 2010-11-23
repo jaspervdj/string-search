@@ -3,8 +3,10 @@
 #include <string.h>
 #include "common.h"
 
-int pattern_hash;
-int most_significant_factor;
+struct search_state {
+    int pattern_hash;
+    int most_significant_factor;
+};
 
 int hash_code(const char *string, int string_size) {
     int hash = 0;
@@ -17,21 +19,25 @@ int hash_code(const char *string, int string_size) {
     return hash;
 }
 
-void search_create(const char *pattern, int pattern_size) {
-    pattern_hash = hash_code(pattern, pattern_size);
-    most_significant_factor = 2 << (pattern_size - 2);
+struct search_state *search_create(const char *pattern, int pattern_size) {
+    struct search_state *state = malloc(sizeof(struct search_state));
+    state->pattern_hash = hash_code(pattern, pattern_size);
+    state->most_significant_factor = 2 << (pattern_size - 2);
+    return state;
 }
 
 /**
  * Search a given pattern in a given buffer.
  */
-void search_buffer(const char *pattern, int pattern_size,
-        const char *file_name, char *buffer, int buffer_size,
-        ullong buffer_offset) {
+void search_buffer(struct search_state *state, const char *pattern,
+        int pattern_size, const char *file_name, char *buffer,
+        int buffer_size, ullong buffer_offset) {
     const char *buffer_start = buffer;
     /* Where to stop matching */
     const char *buffer_end = buffer + buffer_size - pattern_size;
     int buffer_hash = hash_code(buffer, pattern_size);
+    int pattern_hash = state->pattern_hash;
+    int most_significant_factor = state->most_significant_factor;
 
     /* Loop through the buffer... */
     while(buffer < buffer_end) {
@@ -56,5 +62,6 @@ void search_buffer(const char *pattern, int pattern_size,
     }
 }
 
-void search_free() {
+void search_free(struct search_state *state) {
+    free(state);
 }
