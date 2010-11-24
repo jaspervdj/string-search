@@ -48,8 +48,8 @@ dient deze interface te implementeren. De interface bevat volgende methoden:
 \begin{itemize}
     \item \verb#search_create#: Initialiseert data voor doorzoeken. Afhankelijk
     van het algoritme zal deze functie een aantal variabelen initialiseren.
-    \item \verb#search_buffer#: Doorzoek \'e\'en buffer naar het gegeven
-    zoekpatroon.
+    \item \verb#search_buffer#: Doorzoek \'e\'en buffer naar de gegeven
+    zoekterm.
     \item \verb#search_free#: Ruim op na het zoeken. Hier kan het algoritme
     bepaalde variabelen dealloceren.
 \end{itemize}
@@ -90,6 +90,7 @@ Vervolgens doet het enige postprocessing van de data, zoals bepalen van het
 gemiddelde, de standaardafwijking en de uitschieters.
 
 \subsection{Brute force}
+\label{brute-force}
 
 We implementeerden ook een eenvoudig brute-force algoritme in het bestand
 \verb#src/search0.c#. Dit was niet noodzakelijk maar het interessant om dit te
@@ -113,15 +114,15 @@ Onze strategie verloopt als volgt:
 \textbf{Gegeven}:
 
 Een initieel lege buffer $b$ met $b_{size}$ de grootte van deze buffer, en
-$b_{used}$ het aantal gebruikte tekens in deze buffer. Laat $p$ ons zoekpatroon
-zijn met $p_{size}$ de lengte van dit zoekpatroon. Verder is $t$ de te
+$b_{used}$ het aantal gebruikte tekens in deze buffer. Laat $p$ onze zoekterm
+zijn met $p_{size}$ de lengte van deze zoekterm. Verder is $t$ de te
 doorzoeken tekst (met lengte $t_{size}$) en $a$ het gebruikte algoritme.
 
 \textbf{Er geldt}:
 
 \begin{itemize}
     \item initieel is de buffer leeg, dus $b_{used} = 0$;
-    \item het patroon moet in de buffer passen, dus $p_{size} \leq b_{size}$.
+    \item de zoekterm moet in de buffer passen, dus $p_{size} \leq b_{size}$.
 \end{itemize}
 
 \textbf{Algoritme}:
@@ -154,7 +155,7 @@ Aangezien $p_{size}$ en $t_{size}$ vastliggen, is $b_{size}$ de enige factor
 waarmee we de overhead kunnen be\"invloeden. Om de overhead te minimaliseren,
 moeten we $b_{size}$ dus zo groot mogelijk kiezen.
 
-Wat is nu concreet een goede buffergrootte? Als we voor een vast patroon (20
+Wat is nu concreet een goede buffergrootte? Als we voor een vaste zoekterm (20
 bytes, random) in een vaste tekst (200 bytes, random) zoeken, zien we dat de
 uitvoeringstijd inderdaad omgekeerd evenredig is met de buffergrootte (zie
 Figuur \ref{fig:plot-buffer-size}). We kiezen daarom $b_{size} = 65536$, omdat
@@ -181,7 +182,7 @@ gebruiken indien het $p_{size} > b$. We bestuderen twee mogenlijkheden:
     arbitraire lengte aan, weliswaar met een zekere overhead.
 \end{itemize}
 
-We onderzoeken de overhead. Wanneer we een kort zoekpatroon gebruiken, is er
+We onderzoeken de overhead. Wanneer we een korte zoekterm gebruiken, is er
 duidelijk een zeer grote overhead (zie Figuur \ref{fig:plot-bit-vector}).
 We kiezen er dus voor om brute force te gebruiken in de implementatie.
 De bitvector-gebaseerde implementatie is terug te vinden in
@@ -189,7 +190,7 @@ De bitvector-gebaseerde implementatie is terug te vinden in
 
 \image{plot-bit-vector}{We vergelijken het gebruik van een bitvector structuur
 (blauw) bij shift-and met het gebruik van brute force(rood). We laten de
-tekstgrootte vari\"eren voor een vaste zoekpatroongrootte (20 bytes). Het is
+tekstgrootte vari\"eren voor een vaste zoektermgrootte (20 bytes). Het is
 duidelijk dat de overhead bij een bitvector zeer groot is.}
 
 \section{Knuth-Morris-Prath}
@@ -229,6 +230,14 @@ element verder lopen.
 Als derde algoritme twijfelde ik initieel tussen Rabin-Karp en Horspool. Na
 enkele tests te draaien bleek Horspool echter veel sneller voor de meeste
 gevallen, dus koos ik hiervoor.
+
+De implementatie van Horspool is zeer eenvoudig en straightforward — dit is een
+van de redenen dat dit algoritme zo snel is, er worden nauwelijks complexe
+berekeningen gedaan.
+
+Als we de \verb#buffer# variabele zo kiezen dat deze steeds naar het laatste
+karakter wijst, moeten we ook nauwelijks pointer aritmetiek toepassen, enkel in
+het geval dat er een match is moeten we enkele aritmetische operaties uitvoeren.
 
 \section{Algemene optimalisaties}
 
@@ -326,7 +335,7 @@ multicore processors.
 Hiertoe gebruiken we de utilities \verb#pipe-diff# (zie \ref{pipe-diff}) en
 \verb#generate-text-and-matches# (zie \ref{generate-text-and-matches}).
 
-We genereren voor een bepaald zoekpatroon een stroom van tekst, en laten
+We genereren voor een bepaalde zoekterm een stroom van tekst, en laten
 alle zoekalgoritmes erop los. Voor $x$ zoekalgoritmen krijgen we dus $x$
 outputstromen met posities, en van \verb#generate-text-and-matches# krijgen we
 nog 1 outputstroom met de verwachte posities. Vervolgens vergelijken we al deze
@@ -371,6 +380,35 @@ de tekst), dus het zal de gevonden matches daarmee vergelijken.
 
 In deze sectie vergelijken we de snelheid van de algoritmes, toegepast op een
 aantal veel voorkomende gevallen en een aantal interessante gevallen.
+
+\subsection{Worst-case scenario}
+
+In deze subsectie bekijken we de snelheid van de verschillende algoritmes in
+een zeer nadelig scenario: we zoeken een term van het formaat \verb#aa...aab#
+in een tekst van hetzelfde formaat (een worst-case voor brute-force dus). We
+laten de zoektermgrootte vari\"eren van zeer kort tot bijna de lengte van het
+tekstbestand.
+
+Voor ons brute-force algoritme (zie \ref{brute-force}) krijgen we een grafiek
+(zie Figuur \ref{fig:plot-worst-case-brute-force}) die eenvoudig te verklaren
+is. Eerst bekijken we de linkerhelft van de grafiek: naarmate de zoekterm langer
+wordt, stijgt de uitvoeringstijd — dit is inherent aan brute force. In de
+rechterhelft zien we dat de uitvoeringstijd hierna weer daalt. Dit is omdat
+als de zoekterm zeer groot wordt, er slechts weinig posities zijn op welke de
+zoekterm kan voorkomen (hij moet immers binnen de tekst passen...).
+
+\image{plot-worst-case-brute-force}{Uitvoeringstijd van het brute-force
+algoritme bij een worst-case scenario}
+
+Als we de uitvoeringstijden van de andere algoritmen plotten krijgen we een
+grafiek zoals in Figuur \ref{fig:plot-worst-case}. We kunnen zien dat shift-and
+relatief trager is dan de andere algoritmen — de grafiek lijkt zeer sterk op
+deze van brute-force. Dit is eenvoudig te verklaren, shift-and is in essentie
+gewoon een optimalisatie van brute-force met een constante factor.
+
+\image{plot-worst-case}{Uitvoeringstijden van de verschillende algoritmen voor
+een worst-case scenartio. Shift-and wordt in het rood aangeduid, KMP in het
+blauw, en Horspool in het groen}
 
 \section{Utilities}
 

@@ -36,7 +36,8 @@ void search_buffer(struct search_state *state, const char *pattern,
         const char *file_name, ullong buffer_offset) {
     ullong column;    
     const char *buffer_start = buffer;
-    const char *buffer_end = buffer + buffer_size;
+    const char *buffer_end = buffer + buffer_size -
+            (pattern_size < ULLONG_BITS ? 0 : pattern_size - ULLONG_BITS);
     ullong *character_columns = state->character_columns;
     ullong match_column = state->match_column;
 
