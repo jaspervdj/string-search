@@ -1,10 +1,12 @@
 #!/usr/bin/ruby
 
+# Test by comparing the results of two algorithms
+
 NUMBER_OF_TESTS = 100
 CHARACTERS = ('a' .. 'd').to_a.join
 
 if ARGV.length < 2 then
-    puts "Usage: #{$0} algorithm1 algorithm2"
+    puts "Usage: #{$0} <algorithm1> <algorithm2>"
     exit 1
 end
 
