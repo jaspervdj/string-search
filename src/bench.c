@@ -35,6 +35,17 @@ void print_usage(int argc, char **argv) {
 }
 
 /**
+ * Method to compare doubles, used in qsort
+ */
+int compare_doubles(const void *d1, const void *d2) {
+    double v1 = *(double *) d1;
+    double v2 = *(double *) d2;
+    if(v1 < v2) return -1;
+    else if (v1 == v2) return 0;
+    else return 1;
+}
+
+/**
  * Main method
  */
 int main(int argc, char **argv) {
@@ -49,6 +60,8 @@ int main(int argc, char **argv) {
     double sum = 0.0;
     double mean = 0.0;
     double standard_deviation = 0.0;
+    int median_index = 0;
+    double median = 0.0;
     int i;
 
     while((opt_code = getopt(argc, argv, "hn:o:qw:")) != -1) {
@@ -109,6 +122,16 @@ int main(int argc, char **argv) {
         if(ABS(mean - run_times[i]) > standard_deviation * 3) outliers++;
     }
     fprintf(out, "Outliers: %d\n", outliers);
+
+    /* Sort the run times to find the median */
+    qsort(run_times, runs, sizeof(double), compare_doubles);
+    median_index = runs / 2;
+    if(runs % 2) {
+        median = 0.5 * (run_times[median_index] + run_times[median_index + 1]);
+    } else {
+        median = run_times[median_index];
+    }
+    fprintf(out, "Median: %f\n", median);
 
     free(run_times);
 

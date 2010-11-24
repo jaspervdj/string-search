@@ -1,3 +1,6 @@
+/**
+ * Rabin-Karp implementation
+ */
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

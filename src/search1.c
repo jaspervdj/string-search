@@ -1,5 +1,5 @@
 /**
- * Shift-and searching
+ * Shift-and searching, falling back to brute force if necessary
  */
 #include <stdlib.h>
 #include <stdio.h>

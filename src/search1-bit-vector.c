@@ -1,5 +1,5 @@
 /**
- * Shift-and with a bit vector
+ * Shift-and searching, using a bit vector
  */
 #include <stdlib.h>
 #include <stdio.h>

@@ -15,29 +15,39 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
     int i;
     struct search_state *state;
 
-    buffer = create_buffer(pattern_size, &buffer_size);
-
     /* Check that the file is open */
     if(!file) {
         printf("Could not open: %s\n", file_name);
         return;
     }
 
+    /* Create a buffer of at least the pattern size */
+    buffer = create_buffer(pattern_size, &buffer_size);
+
+    /* Initialize the search state */
     state = search_create(pattern, pattern_size);
 
+    /* Fill in a first buffer */
     result = fill_next_buffer(buffer, buffer_size, 0, file);
+
+    /* While we get a complete buffer back... */
     while(result == buffer_size) {
+        /* Search the buffer */
         search_buffer(state, pattern, pattern_size, file_name, buffer,
                 result, position);
+
+        /* Update the position and fill in a next buffer */
         position += result - pattern_size + 1;
         result = fill_next_buffer(buffer, buffer_size, pattern_size - 1, file);
     }
 
+    /* At this point, we got less bytes than expected; this means this is the
+     * last buffer. We also need to search this one... */
     search_buffer(state, pattern, pattern_size, file_name,
             buffer, result, position);
 
+    /* Now, the search has finished. We can free up our resources. */
     search_free(state);
-
     free(buffer);
     fclose(file);
 }
@@ -67,7 +77,7 @@ int search_files(char *pattern_file_name, char **file_names,
         search_file(pattern, pattern_size, file_names[i]);
     }
 
+    /* Free up and return */
     free(pattern);
-
     return 0;
 }

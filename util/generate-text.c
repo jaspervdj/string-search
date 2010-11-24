@@ -25,6 +25,7 @@ void print_usage(int argc, char **argv) {
     printf("-o file    Output file (Default: stdout)\n");
     printf("-r seed    Use given random seed\n");
     printf("-s size    Number of bytes (Default: %d)\n", DEFAULT_SIZE);
+    printf("\n");
 }
 
 /**
