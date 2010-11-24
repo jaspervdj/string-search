@@ -14,12 +14,9 @@ struct search_state *search_create(const char *pattern, int pattern_size) {
     return 0;
 }
 
-/**
- * Search a given pattern in a given buffer.
- */
 void search_buffer(struct search_state *state, const char *pattern,
-        int pattern_size, const char *file_name, char *buffer, int buffer_size,
-        ullong buffer_offset) {
+        int pattern_size, char *buffer, int buffer_size,
+        const char *file_name, ullong buffer_offset) {
     int i, j;
 
     for(i = 0; i + pattern_size - 1 < buffer_size; i++) {

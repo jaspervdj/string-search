@@ -33,8 +33,8 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
     /* While we get a complete buffer back... */
     while(result == buffer_size) {
         /* Search the buffer */
-        search_buffer(state, pattern, pattern_size, file_name, buffer,
-                result, position);
+        search_buffer(state, pattern, pattern_size, buffer, result,
+                file_name, position);
 
         /* Update the position and fill in a next buffer */
         position += result - pattern_size + 1;
@@ -43,8 +43,8 @@ void search_file(const char *pattern, int pattern_size, const char *file_name) {
 
     /* At this point, we got less bytes than expected; this means this is the
      * last buffer. We also need to search this one... */
-    search_buffer(state, pattern, pattern_size, file_name,
-            buffer, result, position);
+    search_buffer(state, pattern, pattern_size, buffer, result,
+            file_name, position);
 
     /* Now, the search has finished. We can free up our resources. */
     search_free(state);
