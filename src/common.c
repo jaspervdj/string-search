@@ -54,9 +54,10 @@ void print_match(const char *file_name, ullong position) {
     printf("%s:%lld\n", file_name, position);
 }
 
-void to_binary(ullong n, char *buffer) {
+char *to_binary(ullong n) {
     int i;
     ullong mask = 1;
+    char *buffer = malloc((ULLONG_BITS + 1) * sizeof(char));
 
     /* Fill in the bytes */
     for(i = ULLONG_BITS - 1; i >= 0; i--) {
@@ -65,4 +66,5 @@ void to_binary(ullong n, char *buffer) {
 
     /* Do not forget a trailing 0 byte */
     buffer[ULLONG_BITS] = '\0';
+    return buffer;
 }

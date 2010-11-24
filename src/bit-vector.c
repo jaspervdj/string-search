@@ -37,18 +37,13 @@ void bit_vector_free(bit_vector *bv) {
 }
 
 void bit_vector_print(const bit_vector *bv, int size) {
-    int ullong_chars = ULLONG_BITS + 1;
-    char *buffer = malloc(size * ullong_chars);
     int i;
 
     for(i = 0; i < size; i++) {
-        to_binary(bv[size - i - 1], buffer + i * ullong_chars);
-        buffer[(i + 1) * ullong_chars - 1] = '|';
+        char *buffer = to_binary(bv[size - i - 1]);
+        printf("%s|", buffer);
+        free(buffer);
     }
 
-    buffer[size * ullong_chars - 1] = '\0';
-
-    printf("%s\n", buffer);
-
-    free(buffer);
+    printf("\n");
 }

@@ -9,9 +9,8 @@
 typedef ullong bit_vector;
 
 /**
- * Create a bit_vector representing the value 1, so, (size - 1) 0-bits followed
- * by 1 1-bit.
- * @param size Minimum number of bits
+ * Create a bit_vector with all bits set to 1
+ * @param size Number of elements in the vector
  * @return A new bit vector
  */
 bit_vector *bit_vector_create_one(int size);
@@ -19,7 +18,7 @@ bit_vector *bit_vector_create_one(int size);
 /**
  * Perform a shift-or operation
  * @param bv Bit vector to operate on
- * @param size Number of bits in the vector
+ * @param size Number of elements in the vector
  * @param mask Mask to OR with
  */
 void bit_vector_shift_or(bit_vector *bv, int size, const bit_vector *mask);
@@ -47,7 +46,7 @@ void bit_vector_free(bit_vector *bv);
 /**
  * Print out a bit vector, can be useful for debugging purposes
  * @param bv Bit vector to print
- * @param size Number of bits in the bit vector
+ * @param size Number of elements in the bit vector
  */
 void bit_vector_print(const bit_vector *bv, int size);
 
