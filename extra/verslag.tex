@@ -165,6 +165,8 @@ met de buffergrootte}
 
 \section{Shift-and}
 
+\subsection{Strategie bij langere zoekpatronen}
+
 Stel $b$ gelijk aan het aantal bits in een \verb#unsigned long long#.
 
 Een belangrijke vraag bij het shift-and algoritme is welke strategie we
@@ -222,9 +224,11 @@ Het instellen van dit element verloopt volledig analoog met de vorige elementen,
 we laten dus gewoon de lus waarin we de verschuivingstabel opstellen \'e\'en
 element verder lopen.
 
-\section{Rabin-Karp}
+\section{Horspool}
 
-TODO
+Als derde algoritme twijfelde ik initieel tussen Rabin-Karp en Horspool. Na
+enkele tests te draaien bleek Horspool echter veel sneller voor de meeste
+gevallen, dus koos ik hiervoor.
 
 \section{Algemene optimalisaties}
 
@@ -343,6 +347,25 @@ algoritmes sequentieel start, en de resultaten vergelijkt met een klassieke
 
 Welke twee algoritmes vergeleken moeten worden, kan de gebruiker meegeven op de
 commandolijn.
+
+\subsection{Overlappende matches}
+
+Een geval waar het eventueel fout zou kunnen gaan zijn overlappende matches. Om
+dit te testen schreven we een klein ruby-scriptje in
+\verb#util/overlapping-test.rb#, dat een bestand genereerd met zeer veel
+overlappende matches. Een voorbeeld van zo'n geval:
+
+\begin{center}
+\begin{tabular}{llllllllll}
+Tekst:   & t & a & m & t & a & m & t & a & m \\
+Match 1: & t & a & m & t & a & m &   &   &   \\
+Match 2: &   &   &   & t & a & m & t & a & m \\
+\end{tabular}
+\end{center}
+
+Dit scriptje zal zo'n bestand aanmaken en de verschillende algoritmes erop
+loslaten. Het kan zelf eenvoudig de matches voorspellen (vanwege het patroon in
+de tekst), dus het zal de gevonden matches daarmee vergelijken.
 
 \section{Snelheidstesten}
 
