@@ -407,8 +407,19 @@ deze van brute-force. Dit is eenvoudig te verklaren, shift-and is in essentie
 gewoon een optimalisatie van brute-force met een constante factor.
 
 \image{plot-worst-case}{Uitvoeringstijden van de verschillende algoritmen voor
-een worst-case scenartio. Shift-and wordt in het rood aangeduid, KMP in het
+een worst-case scenario. Shift-and wordt in het rood aangeduid, KMP in het
 blauw, en Horspool in het groen}
+
+\image{plot-worst-case-detail}{Uitvoeringstijden van de verschillende algoritmen
+voor een worst-case scenario. KMP wordt in het blauw aangeduid, en Horspool in
+het groen}
+
+We bekijken nu de uitvoeringstijden van KMP en Horspool in detail (zie Figuur
+\ref{fig:plot-worst-case-detail}). We kunnen de lineaire complexiteit van KMP
+hier mooi ge\"illustreerd zien. De uitvoeringstijden van Horspool worden kleiner
+voor grotere zoektermen, maar dit is enkel omdat Horspool eerst naar het laatste
+karakter kijkt — dit is dus een uitzonderingsgeval, gegeven de speciale
+zoekterm.
 
 \section{Utilities}
 
