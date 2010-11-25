@@ -12,6 +12,8 @@
 \setmainfont{Bitstream Vera Serif}
 \setmonofont{Inconsolata}
 
+% Some macros
+
 \newcommand{\image}[3][1]{
     \begin{figure}
     \begin{center}
@@ -22,6 +24,10 @@
     \end{figure}
 }
 
+\newcommand{\reproduce}[1]{
+    Deze resultaten kunnen eenvoudig gereproduceerd worden door het
+    ruby-scriptje \texttt{#1} uit te voeren.
+}
 
 \title{Project Algoritmen en Datastructuren III}
 \author{Jasper Van der Jeugt}
@@ -161,6 +167,8 @@ uitvoeringstijd inderdaad omgekeerd evenredig is met de buffergrootte (zie
 Figuur \ref{fig:plot-buffer-size}). We kiezen daarom $b_{size} = 65536$, omdat
 grotere buffer sizes niet veel verschil meer zullen maken.
 
+\reproduce{plot/buffer-size.rb}
+
 \image{plot-buffer-size}{We zien dat de uitvoeringstijd omgekeerd evenredig is
 met de buffergrootte}
 
@@ -189,7 +197,7 @@ De bitvector-gebaseerde implementatie is terug te vinden in
 \verb#src/search1-bit-vector.c# als referentie.
 
 \image{plot-bit-vector}{We vergelijken het gebruik van een bitvector structuur
-(blauw) bij shift-and met het gebruik van brute force(rood). We laten de
+(blauw) bij shift-and met het gebruik van brute force (rood). We laten de
 tekstgrootte vari\"eren voor een vaste zoektermgrootte (20 bytes). Het is
 duidelijk dat de overhead bij een bitvector zeer groot is.}
 
@@ -420,6 +428,22 @@ hier mooi ge\"illustreerd zien. De uitvoeringstijden van Horspool worden kleiner
 voor grotere zoektermen, maar dit is enkel omdat Horspool eerst naar het laatste
 karakter kijkt — dit is dus een uitzonderingsgeval, gegeven de speciale
 zoekterm.
+
+\reproduce{plot/worst-case.rb}
+
+\subsection{Grootte van het alfabet}
+
+Ook een interessante vraag is welke invloed van de grootte van het alfabet
+heeft op de uitvoeringstijden van de algoritmen. Als we de alfabetgrootte laten
+vari\"eren in het interval $[2, 200]$, voor $p_{size} = 1000$, $t_{size} =
+300000$, met willekeurige tekst, krijgen we een plot zoals te zien is in Figuur
+\ref{fig:plot-character-range}.
+
+\image{plot-character-range}{Uitvoeringstijden van de verschillende algoritmen
+bij een vari\"erende alfabetgrootte. Brute-force wordt in het zwart aangeduid,
+Shift-and in het rood, KMP in het blauw, en Horspool in het groen}
+
+\reproduce{plot/character-range.rb}
 
 \section{Utilities}
 
