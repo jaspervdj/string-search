@@ -439,9 +439,18 @@ vari\"eren in het interval $[2, 200]$, voor $p_{size} = 1000$, $t_{size} =
 300000$, met willekeurige tekst, krijgen we een plot zoals te zien is in Figuur
 \ref{fig:plot-character-range}.
 
+De alfabetgrootte heeft duidelijk invloed op de Brute-force, KMP en Horspool
+algoritmes. De uitvoeringstijden worden sneller als de alfabetgrootte toeneemt.
+Dit is te verklaren omdat, als de alfabetgrootte toeneemt, het aantal toevallige
+matches zal afnemen.
+
+Dit heeft echter geen invloed op shift-and. Dit komt omdat bij shift-and geen
+tijd zal verloren gaan aan de toevallige matches — aangezien deze vergelijkingen
+in parallel gebeuren.
+
 \image{plot-character-range}{Uitvoeringstijden van de verschillende algoritmen
 bij een vari\"erende alfabetgrootte. Brute-force wordt in het zwart aangeduid,
-Shift-and in het rood, KMP in het blauw, en Horspool in het groen}
+shift-and in het rood, KMP in het blauw, en Horspool in het groen}
 
 \reproduce{plot/character-range.rb}
 
