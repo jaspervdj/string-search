@@ -450,9 +450,16 @@ Eerst vergelijken we de algoritmen voor een eenvoudig scenario: $p_{size} = 20$,
 en we laten $t_{size}$ vari\"eren. We krijgen de grafiek die te zien is Figuur
 \ref{fig:plot-text-size}.
 
+Het is duidelijk dat Horspool het beste algoritme is voor dit scenario.
+Tussen de andere algoritmen ligt er een kleiner verschil. Als we $p_{size}$
+vast kiezen, zijn alle algoritmen dus lineair afhankelijk van $t_{size}$ qua
+tijdscomplexiteit.
+
 \image{plot-text-size}{Uitvoeringstijden van de verschillende algoritmen voor
 vari\"erende tekstgrootte. Brute-force wordt in het zwart aangeduid, shift-and
 in het rood, KMP in het blauw, en Horspool in het groen}
+
+\reproduce{plot/text-size.rb}
 
 \subsection{Worst-case scenario}
 
