@@ -99,7 +99,7 @@ gemiddelde, de standaardafwijking en de uitschieters.
 \label{brute-force}
 
 We implementeerden ook een eenvoudig brute-force algoritme in het bestand
-\verb#src/search0.c#. Dit was niet noodzakelijk maar het interessant om dit te
+\verb#src/search0.c#. Dit was niet noodzakelijk maar wel interessant om te
 vergelijken met de andere algoritmes, en het kan ook gebruikt worden in
 correctheidstesten.
 
@@ -209,10 +209,10 @@ Een belangrijke vraag is wat we doen als we een match vinden. Een na\"ieve
 implementatie zou kunnen zijn: de huidige positie met \'e\'en verhogen, en het
 aantal gelijke tekens terug gelijk te stellen aan 0.
 
-Stel echter dat er op elke positie van tekst een match voorkomt. Dan is het
-eenvoudig om te zien dat de tijdscomplexiteit algoritme nu een bovengrens heeft
-van $O(m \cdot n)$. Dit willen we niet, aangezien het voordeel van KMP net is
-dat het altijd in $O(m + n)$ tijd kan.
+Stel echter dat er op elke positie van tekst een match voorkomt. Dan is
+het eenvoudig om te zien dat de tijdscomplexiteit van het algoritme nu een
+bovengrens heeft van $O(m \cdot n)$. Dit willen we niet, aangezien het voordeel
+van KMP net is dat het altijd in $O(m + n)$ tijd kan.
 
 Onze oplossing bestaat eruit om onze verschuivingstabel \'e\'en element groter
 te maken. De betekenis van dit laatste element is analoog met de betekenis van
@@ -232,6 +232,60 @@ b & a & r & b & a & d & o & s &   \\
 Het instellen van dit element verloopt volledig analoog met de vorige elementen,
 we laten dus gewoon de lus waarin we de verschuivingstabel opstellen \'e\'en
 element verder lopen.
+
+\subsection{De fout in Algoritme 11 (Berekenen van V[])}
+
+In algoritme 11 in de lesnotat's staat een fout — deze werd snel opgemerkt door
+de vergelijkende test op random gegenereerde tekst (zie \ref{comparing-test}).
+
+Het probleem zit in de regel:
+
+\begin{verbatim}
+for(i = 1; i <= eerste_mismatch; i++) V[start + i] = start;
+\end{verbatim}
+
+Het probleem is dat nu waarden in de verschuivingstabel kunnen overschreven
+worden door grotere waarden. Dit is in contradictie met de definitie van de
+verschuivingstabel in de cursus:
+
+\begin{equation*}
+V[j] = \left\{
+    \begin{array}{ll}
+        1 & \text{als} ~ j = 0 \\
+        \min \left\{
+            s \middle|
+                (0 < s < j ~\text{en}~ z[0] = z[s], ..., z[j - 1- s] = z[j - 1])
+                ~\text{of}~
+                s = j
+            \right\}
+            & \text{anders}    \\
+    \end{array}
+    \right.
+\end{equation*}
+
+Als we de correcte verschuivingstabel willen kunnen we eenvoudig rekening houden
+met het feit dat we het minimum willen:
+
+\begin{verbatim}
+for(i = 1; i <= eerste_mismatch; i++) {
+    if(start < V[start + i]) {
+        V[start + i] = start;
+    }
+}
+\end{verbatim}
+
+Het probleem is echter dat het algoritme nog altijd kwadratisch is qua
+tijdscomplexiteit! Het is immers mogelijk dat waarden verschillende keren worden
+bekeken. De oplossing wordt gegeven door het feit dat
+\verb#start < V[start + i]# impliceert dat \verb#i >= gelijke_tekens + 1#.
+
+Als \verb#i < gelijke_tekens + 1# hebben we immers al naar dit element gekeken.
+Aangezien \verb#start# deze iteratie een grotere waarde heeft, moeten we niets
+overschrijven. We kunnen de regel dus corrigeren naar:
+
+\begin{verbatim}
+for(i = 1 + gelijke_tekens; i <= eerste_mismatch; i++) V[start + i] = start;
+\end{verbatim}
 
 \section{Horspool}
 
@@ -355,11 +409,12 @@ draaien, het geheugengebruik blijft constant — we kunnen dit dus enkele
 nachten laten draaien, zo zijn we er vrij zeker van dat onze algoritmes werken.
 
 \subsection{Eenvoudigweg vergelijken}
+\label{comparing-test}
 
 We kunnen ook een eenvoudigere test schrijven, \'e\'en die simpelweg twee
 algoritmes sequentieel start, en de resultaten vergelijkt met een klassieke
 \verb#diff#. Dit is ge\"implementeerd in het eenvoudige ruby-scriptje
-\verb#util/comparing-test.rb#. Het gebruikt de \verb#generate-text# (zie
+\verb#util/comparing-test.rb#. Het gebruikt de \verb#generate-text# utility (zie
 \ref{generate-text}) om willekeurige zoekpatronen en teksten aan te maken.
 
 Welke twee algoritmes vergeleken moeten worden, kan de gebruiker meegeven op de
