@@ -17,5 +17,6 @@ NUMBER_OF_TESTS.times do
     `#{ARGV[1]} tmp/pattern tmp/text > tmp/matches-2`
     unless `diff tmp/matches-1 tmp/matches-2`.empty?
         puts "Test failed!"
+        exit 1
     end
 end

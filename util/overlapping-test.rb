@@ -31,5 +31,6 @@ ARGV.each do |algorithm|
     `#{algorithm} tmp/pattern tmp/text > tmp/matches`
     unless `diff tmp/matches tmp/expected-matches`.empty?
         puts "Test failed!"
+        exit 1
     end
 end
