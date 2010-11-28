@@ -1,2 +1,3 @@
-search1:main.c search1.c common.c search.c
-search2:main.c search2.c common.c search.c
+search1:main.c search1.c common.c search-files.c
+search2:main.c search2.c common.c search-files.c
+search3:main.c search3.c common.c search-files.c
