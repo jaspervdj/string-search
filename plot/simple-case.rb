@@ -21,6 +21,7 @@ puts <<HERE
 \\begin{center}
 \\begin{tabular}{lr}
     Algoritme & Uitvoeringstijd (in s) \\\\
+    \\hline
 #{table}
 \\end{tabular}
 \\end{center}

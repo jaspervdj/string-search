@@ -444,7 +444,41 @@ de tekst), dus het zal de gevonden matches daarmee vergelijken.
 In deze sectie vergelijken we de snelheid van de algoritmes, toegepast op een
 aantal veel voorkomende gevallen en een aantal interessante gevallen.
 
-\subsection{Een eenvoudig scenario}
+\subsection{Enkele praktische toepassingen}
+
+Exacte string-matching algoritmes worden onder andere gebruikt in de
+bioinformatica. Een praktisch voorbeeld is bijvoorbeeld het zoeken van de string
+\verb#ACATAC# in het volledige genoom van Bacillus anthracis. Horspool is hier
+duidelijk het best voor geschikt, en shift-and is ook zeer snel.
+
+\begin{center}
+\begin{tabular}{lr}
+    Algoritme & Uitvoeringstijd (in s) \\
+    \hline
+    Brute-force & 0.075055 \\
+    Shift-and & 0.043047 \\
+    KMP & 0.083983 \\
+    Horspool & 0.038495 \\
+\end{tabular}
+\end{center}
+
+We kregen een groot mailbox bestand, we kunnen hierin zoeken naar mails waarin
+\verb#fsnotify# in voorkomt (relatief veel hits). Ook hier blijkt Horspool het
+snelste algoritme — dit was min of meer te verwachten, aangezien Horspool zeer
+goed presteert voor human-readable tekst.
+
+\begin{center}
+\begin{tabular}{lr}
+    Algoritme & Uitvoeringstijd (in s) \\
+    \hline
+    Brute-force & 1.283829 \\
+    Shift-and & 1.298963 \\
+    KMP & 1.465598 \\
+    Horspool & 0.51932 \\
+\end{tabular}
+\end{center}
+
+\subsection{Vari\"erende tekstgrootte}
 
 Eerst vergelijken we de algoritmen voor een eenvoudig scenario: $p_{size} = 20$,
 en we laten $t_{size}$ vari\"eren. We krijgen de grafiek die te zien is Figuur
