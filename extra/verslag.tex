@@ -66,8 +66,8 @@ algoritmes. Dit gebeurde in \verb#src/search1.c#, \verb#src/search2.c# en
 \verb#src/search3.c#.
 
 Als we deze interface hebben, is het ook mogelijk om door middel van buffers
-(zie \ref{buffers}) een functie te schrijven die files doorzoekt. Dit gebeurd in
-\verb#src/search-files.c#.
+(zie \ref{buffers}) een functie te schrijven die files doorzoekt. Dit gebeurdt
+in \verb#src/search-files.c#.
 
 Vervolgens maakt \verb#src/main.c# gebruik van \verb#src/search-files.c# om een
 entry point te hebben. De structuur van het programma is dus een soort gelaagde
@@ -110,10 +110,11 @@ Omdat \'e\'en van de vereisten is dat het doorzoeken van grote files mogelijk
 is, gebruiken we buffers.
 
 Buffers zijn nodig omdat we nooit het volledige te doorzoeken bestand in \'e\'en
-keer in het werkgeheugen kunnen laden als dit groot is. We lezen het dus in per
-buffer. In deze subsectie argumenteren we dat we een willekeurig exact string
-matching algoritme dat werkt op een simpele array gemakkelijk kunnen uitbreiden
-tot een algoritme dat op grote files werkt via buffers.
+keer in het werkgeheugen kunnen laden als dit groot is. We lezen het dus in
+per buffer. In deze subsectie argumenteren we dat als we een willekeurig exact
+string matching algoritme $a$ hebben, dat werkt op een simpele array, dat we dit
+gemakkelijk kunnen uitbreiden tot een algoritme dat op grote files werkt via
+buffers.
 
 Onze strategie verloopt als volgt:
 
@@ -179,7 +180,7 @@ met de buffergrootte}
 Stel $b$ gelijk aan het aantal bits in een \verb#unsigned long long#.
 
 Een belangrijke vraag bij het shift-and algoritme is welke strategie we
-gebruiken indien het $p_{size} > b$. We bestuderen twee mogenlijkheden:
+gebruiken indien het $p_{size} > b$. We bestuderen twee mogelijkheden:
 
 \begin{itemize}
     \item We gebruiken gewoon een \verb#unsigned long long#, en kijken initieel
@@ -209,7 +210,7 @@ Een belangrijke vraag is wat we doen als we een match vinden. Een na\"ieve
 implementatie zou kunnen zijn: de huidige positie met \'e\'en verhogen, en het
 aantal gelijke tekens terug gelijk te stellen aan 0.
 
-Stel echter dat er op elke positie van tekst een match voorkomt. Dan is
+Stel echter dat er op elke positie van de tekst een match voorkomt. Dan is
 het eenvoudig om te zien dat de tijdscomplexiteit van het algoritme nu een
 bovengrens heeft van $O(m \cdot n)$. Dit willen we niet, aangezien het voordeel
 van KMP net is dat het altijd in $O(m + n)$ tijd kan.
@@ -235,7 +236,7 @@ element verder lopen.
 
 \subsection{De fout in Algoritme 11 (Berekenen van V[])}
 
-In algoritme 11 in de lesnotat's staat een fout — deze werd snel opgemerkt door
+In algoritme 11 in de lesnota's staat een fout — deze werd snel opgemerkt door
 de vergelijkende test op random gegenereerde tekst (zie \ref{comparing-test}).
 
 Het probleem zit in de regel:
@@ -244,7 +245,7 @@ Het probleem zit in de regel:
 for(i = 1; i <= eerste_mismatch; i++) V[start + i] = start;
 \end{verbatim}
 
-Het probleem is dat nu waarden in de verschuivingstabel kunnen overschreven
+Het probleem is dat waarden in de verschuivingstabel nu kunnen overschreven
 worden door grotere waarden. Dit is in contradictie met de definitie van de
 verschuivingstabel in de cursus:
 
@@ -263,8 +264,8 @@ V[j] = \left\{
     \right.
 \end{equation*}
 
-Als we de correcte verschuivingstabel willen kunnen we eenvoudig rekening houden
-met het feit dat we het minimum willen:
+Als we de correcte verschuivingstabel willen, kunnen we eenvoudig rekening
+houden met het feit dat we het minimum willen:
 
 \begin{verbatim}
 for(i = 1; i <= eerste_mismatch; i++) {
@@ -350,7 +351,7 @@ echter nodig in \verb#search_buffer# — hoe geven we deze variabelen door?
 Onze eerste oplossing bestond eruit om een \verb#struct search_state# te
 declareren in \verb#src/search.h#, en de verschillende algoritmes konden
 deze state dan implementeren zoals gewenst (b.v. een verschuivingstabel,
-of een bitvector erin opslaan). Deze \verb#struct# werkt dan aangemaakt in
+of een bitvector erin opslaan). Deze \verb#struct# werd dan aangemaakt in
 \verb#search_create#, en doorgegeven aan de andere twee functies.
 
 Een andere, en — vanuit een software-engineering standpunt — lelijkere methode
@@ -361,9 +362,9 @@ manier werd de code wel ongeveer 8\% sneller, doordat we b.v.
 Het grote probleem met globale variabelen hier is dat ons algoritme volledig zou
 crashen indien we het later in een multithreaded programma zouden gebruiken.
 Stel bijvoorbeeld dat we de globale variabelen vanuit \'e\'en thread zouden
-overschrijven tijdens dat een andere thread ze nog gebruikt.
+overschrijven wanneer op hetzelfde moment andere thread ze nog gebruikt.
 
-Onze uiteindelijke algoritmes nemen de gulden middelweg: we gebruiken wel een
+Onze uiteindelijke algoritmes nemen de gulden middenweg: we gebruiken wel een
 \verb#struct search_state# die we doorgeven, maar we maken telkens in de
 methoden ook een referentie aan naar de velden hiervan.
 
@@ -372,8 +373,9 @@ methoden ook een referentie aan naar de velden hiervan.
 \subsection{Testen op valse positieven}
 
 Bij een exact string matching algoritme is het zeer makkelijk om te testen op
-valse positieven. Concreet is een vals positief hier wanneer ons algoritme dat
-er een match staat in file $f$ op positie $p$, en dit niet het geval is.
+valse positieven. Concreet is een vals positief hier wanneer ons algoritme
+aangeeft dat er een match staat in file $f$ op positie $p$, en dit niet het
+geval is.
 
 We schreven een tool om dit te testen, de source code hiervan is te vinden in
 \verb#tests/verify-matches.c#. Deze tool neemt op \verb#stdin# een aantal lijnen
@@ -422,9 +424,9 @@ commandolijn.
 
 \subsection{Overlappende matches}
 
-Een geval waar het eventueel fout zou kunnen gaan zijn overlappende matches. Om
-dit te testen schreven we een klein ruby-scriptje in
-\verb#tests/overlapping-test.rb#, dat een bestand genereerd met zeer veel
+Een geval waar het eventueel fout zou kunnen gaan zijn overlappende
+matches. Om dit te testen schreven we een klein ruby-scriptje in
+\verb#tests/overlapping-test.rb#, dat een bestand genereert met zeer veel
 overlappende matches. Een voorbeeld van zo'n geval:
 
 \begin{center}
@@ -496,8 +498,8 @@ algoritme.
 \subsection{Vari\"erende tekstgrootte}
 
 Eerst vergelijken we de algoritmen voor een eenvoudig scenario: $p_{size} = 20$,
-en we laten $t_{size}$ vari\"eren. We krijgen de grafiek die te zien is Figuur
-\ref{fig:plot-text-size}.
+en we laten $t_{size}$ vari\"eren. We krijgen de grafiek die te zien is in
+Figuur \ref{fig:plot-text-size}.
 
 Het is duidelijk dat Horspool het beste algoritme is voor dit scenario.
 Tussen de andere algoritmen ligt er een kleiner verschil. Als we $p_{size}$
@@ -554,16 +556,16 @@ zoekterm.
 
 \subsection{Grootte van het alfabet}
 
-Ook een interessante vraag is welke invloed van de grootte van het alfabet
-heeft op de uitvoeringstijden van de algoritmen. Als we de alfabetgrootte laten
+Ook een interessante vraag is welke invloed de grootte van het alfabet heeft
+op de uitvoeringstijden van de algoritmen. Als we de alfabetgrootte laten
 vari\"eren in het interval $[2, 200]$, voor $p_{size} = 1000$, $t_{size} =
 300000$, met willekeurige tekst, krijgen we een plot zoals te zien is in Figuur
 \ref{fig:plot-character-range}.
 
 De alfabetgrootte heeft duidelijk invloed op de Brute-force, KMP en Horspool
 algoritmes. De uitvoeringstijden worden sneller als de alfabetgrootte toeneemt.
-Dit is te verklaren omdat, als de alfabetgrootte toeneemt, het aantal toevallige
-matches zal afnemen.
+Dit is te verklaren door het feit dat, als de alfabetgrootte toeneemt, het
+aantal toevallige matches zal afnemen.
 
 Dit heeft echter geen invloed op shift-and. Dit komt omdat bij shift-and geen
 tijd zal verloren gaan aan de toevallige matches — aangezien deze vergelijkingen
