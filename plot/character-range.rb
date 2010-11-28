@@ -18,7 +18,7 @@ create_csv range_sizes do |range_size|
     `./util/generate-text -f tmp/characters -s 1000 -o tmp/pattern`
     `./util/generate-text -f tmp/characters -s 300000 -o tmp/text`
 
-    with_algorithms do |algorithm|
+    with_algorithms do |name, algorithm|
         bench algorithm, "tmp/pattern", "tmp/text"
     end
 end

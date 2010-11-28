@@ -13,7 +13,7 @@ buffer_sizes = (4 .. 16).map do |n| 2 ** n end
 create_csv buffer_sizes do |buffer_size|
     change_buffer_size buffer_size
     `make`
-    with_algorithms do |algorithm|
+    with_algorithms do |name, algorithm|
         bench algorithm, "data/zoekterm", "data/kjv"
     end
 end

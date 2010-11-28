@@ -19,7 +19,7 @@ pattern_file_sizes = (1 .. text_file_size)
 create_csv pattern_file_sizes do |pattern_file_size|
     worst_case "tmp/pattern", pattern_file_size
 
-    with_algorithms do |algorithm|
+    with_algorithms do |name, algorithm|
         bench algorithm, "tmp/pattern", "tmp/text"
     end
 end
