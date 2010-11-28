@@ -19,8 +19,8 @@ extra/verslag.log
 extra/verslag.pdf
 extra/verslag.toc
 
-util/generate-text
-util/generate-text-and-matches
-util/verify-matches
-util/worst-case
-util/pipe-diff
+tests/generate-text
+tests/generate-text-and-matches
+tests/verify-matches
+tests/worst-case
+tests/pipe-diff

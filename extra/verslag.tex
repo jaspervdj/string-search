@@ -376,7 +376,7 @@ valse positieven. Concreet is een vals positief hier wanneer ons algoritme dat
 er een match staat in file $f$ op positie $p$, en dit niet het geval is.
 
 We schreven een tool om dit te testen, de source code hiervan is te vinden in
-\verb#util/verify-matches.c#. Deze tool neemt op \verb#stdin# een aantal lijnen
+\verb#tests/verify-matches.c#. Deze tool neemt op \verb#stdin# een aantal lijnen
 van de form \verb#file_name:position#, dus de uitvoer van \'e\'en van de
 zoekalgoritmes. Vervolgens zal het \'e\'en voor \'e\'en alle files openen,
 zoeken naar de gegeven positie, en kijken of de zoekterm hier effectief staat.
@@ -404,7 +404,7 @@ nog 1 outputstroom met de verwachte posities. Vervolgens vergelijken we al deze
 stromen met de \verb#pipe-diff# utility.
 
 Het eenvoudige ruby-scriptje dat al deze stromen aanmaakt en opstart kan worden
-teruggevonden in \verb#util/parallel-test.rb#. In principe kan deze test eeuwig
+teruggevonden in \verb#tests/parallel-test.rb#. In principe kan deze test eeuwig
 draaien, het geheugengebruik blijft constant — we kunnen dit dus enkele
 nachten laten draaien, zo zijn we er vrij zeker van dat onze algoritmes werken.
 
@@ -414,7 +414,7 @@ nachten laten draaien, zo zijn we er vrij zeker van dat onze algoritmes werken.
 We kunnen ook een eenvoudigere test schrijven, \'e\'en die simpelweg twee
 algoritmes sequentieel start, en de resultaten vergelijkt met een klassieke
 \verb#diff#. Dit is ge\"implementeerd in het eenvoudige ruby-scriptje
-\verb#util/comparing-test.rb#. Het gebruikt de \verb#generate-text# utility (zie
+\verb#tests/comparing-test.rb#. Het gebruikt de \verb#generate-text# utility (zie
 \ref{generate-text}) om willekeurige zoekpatronen en teksten aan te maken.
 
 Welke twee algoritmes vergeleken moeten worden, kan de gebruiker meegeven op de
@@ -424,7 +424,7 @@ commandolijn.
 
 Een geval waar het eventueel fout zou kunnen gaan zijn overlappende matches. Om
 dit te testen schreven we een klein ruby-scriptje in
-\verb#util/overlapping-test.rb#, dat een bestand genereerd met zeer veel
+\verb#tests/overlapping-test.rb#, dat een bestand genereerd met zeer veel
 overlappende matches. Een voorbeeld van zo'n geval:
 
 \begin{center}
@@ -475,6 +475,21 @@ goed presteert voor human-readable tekst.
     Shift-and & 1.298963 \\
     KMP & 1.465598 \\
     Horspool & 0.51932 \\
+\end{tabular}
+\end{center}
+
+Een ander voorbeeld is het zoeken van de string \verb#Jesus# in de bijbel (de
+King James versie werd hier gebruikt). Opnieuw is Horspool het meest geschikte
+algoritme.
+
+\begin{center}
+\begin{tabular}{lr}
+    Algoritme & Uitvoeringstijd (in s) \\
+    \hline
+    Brute-force & 0.034527 \\
+    Shift-and & 0.032666 \\
+    KMP & 0.039486 \\
+    Horspool & 0.017885 \\
 \end{tabular}
 \end{center}
 
@@ -568,13 +583,13 @@ shift-and in het rood, KMP in het blauw, en Horspool in het groen}
 We schreven een utility om willekeurige tekst te genereren. Dit is handig bij
 het testen van de verschillende algoritmes.
 
-De source code hiervan is te vinden in \verb#util/generate-text.c#. De gebruiker
-kan meegeven welke karakters er gebruikt moeten worden in de willekeurige tekst
-(b.v. enkel alfanumeriek, of een DNA sequentie) en hoeveel tekst er gegenereerd
-moet worden.
+De source code hiervan is te vinden in \verb#tests/generate-text.c#. De
+gebruiker kan meegeven welke karakters er gebruikt moeten worden in de
+willekeurige tekst (b.v. enkel alfanumeriek, of een DNA sequentie) en hoeveel
+tekst er gegenereerd moet worden.
 
 \label{generate-text-and-matches}
-Een variant bevindt zich in \verb#util/generate-text-and-matches.c#. Deze zal
+Een variant bevindt zich in \verb#tests/generate-text-and-matches.c#. Deze zal
 naast een willekeurige tekst ook nog de verwachte matches (dus de posities
 waarop een match moet voorkomen) genereren.
 
@@ -583,7 +598,7 @@ waarop een match moet voorkomen) genereren.
 
 Om verschillende bestanden te vergelijken, gebruikt men klassiek het \verb#diff#
 programma. Dit werkt echter niet goed als het de bedoeling is om named pipes
-te vergelijken. Om dit op te lossen schreven we \verb#util/pipe-diff.hs#. Deze
+te vergelijken. Om dit op te lossen schreven we \verb#tests/pipe-diff.hs#. Deze
 utility is geschreven in Haskell, omdat die programmeertaal op een eenvoudige
 manier threads en concurrent IO toelaat, wat nodig is als we de output van
 verschillende pipes tegelijk willen vergelijken.

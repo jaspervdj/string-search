@@ -9,7 +9,7 @@ end
 
 # Create an overlapping pattern
 matches_every = 10
-pattern = `util/generate-text -c abcdef -s #{matches_every}`
+pattern = `tests/generate-text -c abcdef -s #{matches_every}`
 pattern = pattern + pattern
 File.open "tmp/pattern", "w" do |file| file.write pattern end
 

@@ -17,9 +17,9 @@ text = "tmp/text"
 matches = "tmp/matches"
 make_pipe text
 make_pipe matches
-`util/generate-text -s 5 -c '\nfooo' -o #{pattern}`
+`tests/generate-text -s 5 -c '\nfooo' -o #{pattern}`
 fork do
-    `util/generate-text-and-matches #{pattern} #{text} #{matches}`
+    `tests/generate-text-and-matches #{pattern} #{text} #{matches}`
 end
 input_pipes = []
 output_pipes = [matches]
@@ -50,4 +50,4 @@ end
 # Start the pipe-diff utility
 #
 sleep 1
-exec "util/pipe-diff #{output_pipes.join ' '}"
+exec "tests/pipe-diff #{output_pipes.join ' '}"
