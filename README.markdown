@@ -1,6 +1,4 @@
 string-search
-=============
-
 What
 ----
 
@@ -17,6 +15,7 @@ algorithms. It provides 6 executables:
 Compiling
 ---------
 
+    mkdir bin
     cmake .
     make
 
@@ -24,3 +23,11 @@ Running
 -------
 
     ./bin/searchX pattern-file [files ...]
+
+Status
+------
+
+There is a known issue in `search1`: when searching for the pattern `aaaa` in
+the text `aaaaaaaaa`, the algorithm will find one *before* the start of the
+file. This is probably caused by the optimizations there. I don't know if I will
+ever fix this bug, since the project has been handed in now.
